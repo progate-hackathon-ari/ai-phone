@@ -27,19 +27,6 @@ func LoadEnv(envfile ...string) error {
 	if err := env.Parse(&config.Otel); err != nil {
 		return err
 	}
-
-	if err := env.Parse(&config.Cloudflare); err != nil {
-		return err
-	}
-
-	if err := env.Parse(&config.Google); err != nil {
-		return err
-	}
-
-	if err := env.Parse(&config.Azure); err != nil {
-		return err
-	}
-
 	Config = &config
 
 	return nil
