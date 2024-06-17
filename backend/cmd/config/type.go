@@ -30,4 +30,10 @@ type config struct {
 		ProjectID string `env:"OTEL_PROJECT_ID"`
 		IsUse     bool   `env:"OTEL_USE"`
 	}
+
+	Google struct {
+		ClientID     string `env:"GOOGLE_CLIENT_ID"`
+		ClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
+		RedirectURI  string `env:"GOOGLE_REDIRECT_URI"`
+	}
 }
