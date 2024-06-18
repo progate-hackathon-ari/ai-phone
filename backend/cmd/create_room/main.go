@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/progate-hackathon-ari/backend/internal/handler"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
 
@@ -14,10 +15,6 @@ func main() {
 }
 
 func run() error {
-	lambda.Start(requestHandler)
+	lambda.Start(handler.CreateRoom)
 	return nil
-}
-
-func requestHandler(ctx context.Context) (string, error) {
-	return "hello world", nil
 }
