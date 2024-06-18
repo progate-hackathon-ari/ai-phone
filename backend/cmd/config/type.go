@@ -12,28 +12,11 @@ const (
 )
 
 type config struct {
-	App struct {
-		Addr string `env:"SERVER_ADDR" envDefault:":8080"`
-		Env  Env    `env:"ENV"`
-	}
-
 	Database struct {
-		Host     string `env:"DATABASE_HOST"`
-		Port     int    `env:"DATABASE_PORT"`
-		User     string `env:"DATABASE_USER"`
-		Password string `env:"DATABASE_PASSWORD"`
-		Name     string `env:"DATABASE_NAME"`
-	}
-
-	Otel struct {
-		Addr      string `env:"OTEL_ADDR"`
-		ProjectID string `env:"OTEL_PROJECT_ID"`
-		IsUse     bool   `env:"OTEL_USE"`
-	}
-
-	Google struct {
-		ClientID     string `env:"GOOGLE_CLIENT_ID"`
-		ClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
-		RedirectURI  string `env:"GOOGLE_REDIRECT_URI"`
+		Host     string `env:"DATABASE_HOST" envDefault:"mysql"`
+		Port     int    `env:"DATABASE_PORT" envDefault:"3306"`
+		User     string `env:"DATABASE_USER" envDefault:"root"`
+		Password string `env:"DATABASE_PASSWORD" envDefault:"admin"`
+		Name     string `env:"DATABASE_NAME" envDefault:"ai-phone"`
 	}
 }

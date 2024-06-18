@@ -1,9 +1,9 @@
 version: "0.1"
 database:
   # consult[https://gorm.io/docs/connecting_to_the_database.html]"
-  dsn : "postgres://postgres:postgres@localhost:5432/ari"
+  dsn : "root:admin@tcp(127.0.0.1:3306)/ai-phone?charset=utf8mb4&parseTime=True&loc=Local"
   # input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html]
-  db  : "postgres"
+  db  : "mysql"
   # specify a directory for output
   outPath :  "./internal/entities/gorm"
   # query code file name, default: gen.go

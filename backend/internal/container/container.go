@@ -1,7 +1,12 @@
 package container
 
 import (
+	"log"
+
 	"github.com/progate-hackathon-ari/backend/internal/driver/db"
+	"github.com/progate-hackathon-ari/backend/internal/repository"
+	"github.com/progate-hackathon-ari/backend/internal/repository/gorm"
+	"github.com/progate-hackathon-ari/backend/internal/usecase"
 	"go.uber.org/dig"
 )
 
@@ -18,6 +23,8 @@ func NewContainer() error {
 	args := []provideArg{
 		{constructor: db.Connect, opts: []dig.ProvideOption{}},
 		{constructor: db.NewGORM, opts: []dig.ProvideOption{}},
+		{constructor: gorm.NewGormDB, opts: []dig.ProvideOption{dig.As(new(repository.DataAccess))}},
+		{constructor: usecase.NewCreateRoomInteractor, opts: []dig.ProvideOption{}},
 	}
 
 	for _, arg := range args {
@@ -35,7 +42,7 @@ func Invoke[T any]() T {
 		r = t
 		return nil
 	}); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return r

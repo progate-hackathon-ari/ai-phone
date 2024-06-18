@@ -1,16 +1,7 @@
-CREATE TABLE "users" (
-  "user_id" varchar PRIMARY KEY,
-  "username" varchar NOT NULL,
-  "email" varchar NOT NULL
+CREATE TABLE `rooms` (
+  `room_id` varchar(255) PRIMARY KEY,
+  `extra_prompt` text,
+  `is_started` TINYINT(1) NOT NULL,
+  `game_size` int NOT NULL,
+  `current_game` int NOT NULL
 );
-
-CREATE TABLE "session" (
-  "session_id" varchar PRIMARY KEY,
-  "user_id" varchar NOT NULL,
-  "token" text NOT NULL,
-  "user_agent" text NOT NULL,
-  "craeted_at" timestamptz NOT NULL,
-  "updated_at" timestamptz NOT NULL
-);
-
-ALTER TABLE "session" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");

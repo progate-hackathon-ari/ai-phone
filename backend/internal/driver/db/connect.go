@@ -6,9 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/XSAM/otelsql"
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/progate-hackathon-ari/backend/cmd/config"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
@@ -17,7 +15,7 @@ func Connect() *sql.DB {
 	ctx := context.Background()
 
 	dsn := fmt.Sprintf(
-		"user=%s password=%s host=%s port=%d database=%s sslmode=disable",
+		"%s:%s@tcp(%s:%d)/%s",
 		config.Config.Database.User,
 		config.Config.Database.Password,
 		config.Config.Database.Host,
@@ -26,22 +24,9 @@ func Connect() *sql.DB {
 	)
 
 	var db *sql.DB
-	pgxConfig, err := pgx.ParseConfig(dsn)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(ctx, "Error parsing config", "error", err)
-	}
-	conn := stdlib.GetConnector(*pgxConfig)
-	if config.Config.Otel.IsUse {
-		db = otelsql.OpenDB(conn,
-			otelsql.WithSpanOptions(otelsql.SpanOptions{
-				Ping:                 false,
-				OmitConnResetSession: true,
-				OmitConnPrepare:      true,
-				OmitRows:             true,
-				OmitConnectorConnect: true,
-			}))
-	} else {
-		db = sql.OpenDB(conn)
 	}
 
 	const maxRetries = 5
@@ -53,7 +38,7 @@ func Connect() *sql.DB {
 			break
 		}
 
-		log.Warn(ctx, fmt.Sprintf("Error pinging DB (Attempt %d/%d): %s\n", i, maxRetries, err))
+		log.Warn(ctx, fmt.Sprintf("Error pinging DB (Attempt %d/%d) dsn:%s err:%s\n", i, maxRetries, dsn, err))
 
 		if i < maxRetries {
 			time.Sleep(retryDelay)
@@ -64,5 +49,6 @@ func Connect() *sql.DB {
 		log.Fatal(ctx, "Exceeded maximum retries: Error pinging DB", "error", err)
 	}
 
+	log.Info(ctx, "Connected to database")
 	return db
 }

@@ -16,17 +16,10 @@ func LoadEnv(envfile ...string) error {
 
 	config := config{}
 
-	if err := env.Parse(&config.App); err != nil {
-		return err
-	}
-
 	if err := env.Parse(&config.Database); err != nil {
 		return err
 	}
 
-	if err := env.Parse(&config.Otel); err != nil {
-		return err
-	}
 	Config = &config
 
 	return nil
