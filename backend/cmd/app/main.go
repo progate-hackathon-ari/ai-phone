@@ -6,8 +6,6 @@ import (
 	"strings"
 
 	"github.com/progate-hackathon-ari/backend/cmd/config"
-	"github.com/progate-hackathon-ari/backend/internal/route"
-	"github.com/progate-hackathon-ari/backend/internal/server"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 	"github.com/progate-hackathon-ari/backend/pkg/otel"
 )
@@ -46,12 +44,6 @@ func run() error {
 		return err
 	}
 	defer shutdown()
-
-	handler := route.NewRoute()
-
-	if err := server.New(config.Config.App.Addr, handler).RunWithGraceful(); err != nil {
-		return err
-	}
 
 	return nil
 }
