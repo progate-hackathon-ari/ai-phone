@@ -1,1 +1,0 @@
-CREATE DATABASE "ari_test";
