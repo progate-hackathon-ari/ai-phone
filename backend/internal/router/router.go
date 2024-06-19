@@ -5,6 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/progate-hackathon-ari/backend/internal/container"
+	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/external/s3"
 	"github.com/progate-hackathon-ari/backend/internal/handler"
 	"github.com/progate-hackathon-ari/backend/internal/middleware"
 	"github.com/progate-hackathon-ari/backend/internal/repository"
@@ -24,8 +26,10 @@ func NewRouter() http.Handler {
 	router.health()
 
 	repo := container.Invoke[repository.DataAccess]()
+	s3 := container.Invoke[s3.S3]()
+	bedrock := container.Invoke[bedrock.Bedrock]()
 
-	router.echo.GET("/game/:room_id", handler.SocketGameRoom(repo))
+	router.echo.GET("/game/:room_id", handler.SocketGameRoom(repo, s3, bedrock))
 
 	corsRoute := router.echo.Group("")
 

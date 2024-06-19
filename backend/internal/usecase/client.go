@@ -6,6 +6,7 @@ import (
 )
 
 type Client struct {
-	ws   *websocket.Conn
-	info *model.ConnectedPlayer
+	ws         *websocket.Conn
+	info       *model.ConnectedPlayer
+	IsAnswered bool
 }

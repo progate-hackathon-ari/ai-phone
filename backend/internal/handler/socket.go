@@ -7,6 +7,8 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
+	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/external/s3"
 	"github.com/progate-hackathon-ari/backend/internal/repository"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
@@ -42,7 +44,7 @@ type Answer struct {
 	Answer string `json:"answer"`
 }
 
-func SocketGameRoom(repo repository.DataAccess) echo.HandlerFunc {
+func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedrock) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
@@ -51,7 +53,7 @@ func SocketGameRoom(repo repository.DataAccess) echo.HandlerFunc {
 		}
 		defer ws.Close()
 
-		game := usecase.NewGameInteractor(ws, repo)
+		game := usecase.NewGameInteractor(ws, repo, s3, bedrock)
 
 		ctx := context.Background()
 		for {
@@ -103,7 +105,9 @@ func SocketGameRoom(repo repository.DataAccess) echo.HandlerFunc {
 					c.Logger().Error(err)
 				}
 
-				log.Info(ctx, "ansewer", answer)
+				if err := game.ImageGenerate(ctx, message.RoomID, answer.Answer); err != nil {
+					c.Logger().Error(err)
+				}
 
 			case EventReady:
 				if err := game.ReadyGame(ctx, message.RoomID); err != nil {

@@ -3,7 +3,10 @@ package container
 import (
 	"log"
 
+	ariaws "github.com/progate-hackathon-ari/backend/internal/driver/ari_aws"
 	"github.com/progate-hackathon-ari/backend/internal/driver/db"
+	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/external/s3"
 	"github.com/progate-hackathon-ari/backend/internal/repository"
 	"github.com/progate-hackathon-ari/backend/internal/repository/gorm"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
@@ -24,6 +27,9 @@ func NewContainer() error {
 		{constructor: db.Connect, opts: []dig.ProvideOption{}},
 		{constructor: db.NewGORM, opts: []dig.ProvideOption{}},
 		{constructor: gorm.NewGormDB, opts: []dig.ProvideOption{dig.As(new(repository.DataAccess))}},
+		{constructor: ariaws.NewConfig, opts: []dig.ProvideOption{}},
+		{constructor: s3.NewS3Repo, opts: []dig.ProvideOption{dig.As(new(s3.S3))}},
+		{constructor: bedrock.NewBedRock, opts: []dig.ProvideOption{dig.As(new(bedrock.Bedrock))}},
 		{constructor: usecase.NewCreateRoomInteractor, opts: []dig.ProvideOption{}},
 	}
 

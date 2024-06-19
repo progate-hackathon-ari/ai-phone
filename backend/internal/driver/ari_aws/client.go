@@ -5,39 +5,14 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
 
-type AWSConnect struct {
-	accountID       string
-	endpoint        string
-	accessKeyID     string
-	accessKeySecret string
-}
-
-func New(
-	accountID,
-	endpoint,
-	accessKeyID,
-	accessKeySecret string,
-) *AWSConnect {
-	return &AWSConnect{
-		accountID:       accountID,
-		endpoint:        endpoint,
-		accessKeyID:     accessKeyID,
-		accessKeySecret: accessKeySecret,
+func NewConfig() aws.Config {
+	sdkConfig, err := config.LoadDefaultConfig(context.Background(), config.WithRegion("us-east-1"))
+	if err != nil {
+		log.Fatal(context.Background(), err.Error())
 	}
-}
 
-func (a *AWSConnect) Config(ctx context.Context) (aws.Config, error) {
-	return config.LoadDefaultConfig(
-		ctx,
-		config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(
-				a.accessKeyID,
-				a.accessKeySecret,
-				"",
-			)),
-		config.WithRegion("auto"),
-	)
+	return sdkConfig
 }

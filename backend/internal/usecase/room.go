@@ -15,19 +15,8 @@ func init() {
 }
 
 type RoomSesison struct {
-	Players map[*Client]bool
+	Players map[string]*Client
 	Master  string
-}
-
-func DownPlayerAnswerFlag(roomID string) {
-	room, ok := Rooms[roomID]
-	if !ok {
-		return
-	}
-
-	for client := range room.Players {
-		room.Players[client] = false
-	}
 }
 
 func IsAnswered(roomID string) bool {
@@ -37,8 +26,8 @@ func IsAnswered(roomID string) bool {
 	}
 
 	// 全員が答えてたらtrue
-	for _, answered := range room.Players {
-		if !answered {
+	for _, client := range room.Players {
+		if !client.IsAnswered {
 			return false
 		}
 	}
@@ -57,7 +46,7 @@ func IsMaster(roomID, connectionID string) bool {
 
 func NewRoomSession(roomID string, masterID string) {
 	Rooms[roomID] = &RoomSesison{
-		Players: make(map[*Client]bool),
+		Players: make(map[string]*Client),
 		Master:  masterID,
 	}
 }
@@ -71,11 +60,11 @@ func AddClient(ws *websocket.Conn, info *model.ConnectedPlayer, roomID string) {
 		NewRoomSession(roomID, info.ConnectionID)
 	}
 
-	Rooms[roomID].Players[client] = false
+	Rooms[roomID].Players[client.info.ConnectionID] = client
 }
 
 func BroadcastInRoom(roomID string, message []byte) error {
-	for client := range Rooms[roomID].Players {
+	for _, client := range Rooms[roomID].Players {
 		if err := client.ws.WriteMessage(websocket.TextMessage, message); err != nil {
 			return err
 		}
