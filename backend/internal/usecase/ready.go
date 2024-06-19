@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 func (i *GameInteractor) ReadyGame(ctx context.Context, roomID string) error {
@@ -24,12 +23,7 @@ func (i *GameInteractor) ReadyGame(ctx context.Context, roomID string) error {
 		return err
 	}
 
-	for i := range 5 {
-		BroadcastInRoom(roomID, []byte(fmt.Sprintf("Ready in %d...", 5-i)))
-		time.Sleep(1 * time.Second)
-	}
-
-	BroadcastInRoom(roomID, []byte("GameStart!!"))
+	Counter(roomID, 5)
 
 	return nil
 }
