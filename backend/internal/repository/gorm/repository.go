@@ -9,12 +9,14 @@ type GormRepo struct {
 	db *gorm.DB
 
 	*RoomRepository
+	*ConnectedPlayerRepository
 }
 
 func NewGormDB(db *gorm.DB) *GormRepo {
 	return &GormRepo{
-		db:             db,
-		RoomRepository: NewRoomRepository(db),
+		db:                        db,
+		RoomRepository:            NewRoomRepository(db),
+		ConnectedPlayerRepository: NewConnectedPlayerRepository(db),
 	}
 }
 

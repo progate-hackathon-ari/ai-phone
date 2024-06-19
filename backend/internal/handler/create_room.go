@@ -1,10 +1,9 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 
-	"github.com/aws/aws-lambda-go/events"
+	"github.com/labstack/echo/v4"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
@@ -18,24 +17,23 @@ type CreateRoomResponse struct {
 	ExtraPrompt string `json:"extraPrompt"`
 }
 
-func CreateRoom(i *usecase.CreateRoomInteractor) APIGatewayProxyHandler {
-	return func(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-		log.Info(ctx, "CreateRoom", request.HTTPMethod, request.Path, request.Body)
-		if request.HTTPMethod != "POST" {
-			return ErrResponse(http.StatusBadRequest, "invalid method")
-		}
+func CreateRoom(i *usecase.CreateRoomInteractor) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ctx := c.Request().Context()
 
-		reqBody, err := Unmarshal[CreateRoomRequest](request.Body)
-		if err != nil {
-			return ErrResponse(http.StatusBadRequest, err.Error())
+		var reqBody CreateRoomRequest
+		if err := c.Bind(&reqBody); err != nil {
+			log.Error(ctx, "failed to bind request", err.Error())
+			return echo.ErrBadRequest
 		}
 
 		room, err := i.CreateRoom(ctx, reqBody.ExtraPrompt)
 		if err != nil {
-			return ErrResponse(http.StatusInternalServerError, err.Error())
+			log.Error(ctx, "faled to create room", err)
+			return echo.ErrInternalServerError
 		}
 
-		return Response(http.StatusOK, CreateRoomResponse{
+		return c.JSON(http.StatusOK, CreateRoomResponse{
 			RoomID:      room.RoomID,
 			ExtraPrompt: room.ExtraPrompt,
 		})
