@@ -1,11 +1,13 @@
 package usecase
 
 import (
+	"context"
 	"encoding/json"
 	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
+	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
 
 var Rooms map[string]*RoomSesison
@@ -17,6 +19,16 @@ func init() {
 type RoomSesison struct {
 	Players map[string]*Client
 	Master  string
+}
+
+func DeleteRoomSession(roomID string) {
+	delete(Rooms, roomID)
+}
+
+func DownAnsweredFlag(roomID string) {
+	for _, client := range Rooms[roomID].Players {
+		client.IsAnswered = false
+	}
 }
 
 func IsAnswered(roomID string) bool {
@@ -61,6 +73,8 @@ func AddClient(ws *websocket.Conn, info *model.ConnectedPlayer, roomID string) {
 	}
 
 	Rooms[roomID].Players[client.info.ConnectionID] = client
+
+	log.Info(context.Background(), "add client", Rooms[roomID].Players)
 }
 
 func BroadcastInRoom(roomID string, message []byte) error {
@@ -68,6 +82,13 @@ func BroadcastInRoom(roomID string, message []byte) error {
 		if err := client.ws.WriteMessage(websocket.TextMessage, message); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+func SendMessageByID(roomID, connectionID string, message []byte) error {
+	if client, ok := Rooms[roomID].Players[connectionID]; ok {
+		return client.ws.WriteMessage(websocket.TextMessage, message)
 	}
 	return nil
 }

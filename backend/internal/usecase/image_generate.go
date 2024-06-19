@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/progate-hackathon-ari/backend/internal/entities/model"
 )
 
 type AnswerResponse struct {
@@ -12,7 +14,10 @@ type AnswerResponse struct {
 }
 
 func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt string) error {
-
+	fmt.Println("rooms", Rooms)
+	fmt.Println("rooms :id", Rooms[roomID])
+	fmt.Println("rooms :id, player", Rooms[roomID].Players)
+	fmt.Println("rooms :id, player :id", Rooms[roomID].Players[i.client.info.ConnectionID])
 	// 2回目も防ぐ
 	if Rooms[roomID].Players[i.client.info.ConnectionID].IsAnswered {
 		return fmt.Errorf("already answered")
@@ -20,6 +25,15 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 
 	room, err := i.repo.GetRoom(ctx, roomID)
 	if err != nil {
+		return err
+	}
+
+	if err := i.repo.CreateIngamePrompt(ctx, &model.InGamePrompt{
+		RoomID:       roomID,
+		ConnectionID: i.client.info.ConnectionID,
+		GameIndex:    room.CurrentGame,
+		Prompt:       prompt,
+	}); err != nil {
 		return err
 	}
 

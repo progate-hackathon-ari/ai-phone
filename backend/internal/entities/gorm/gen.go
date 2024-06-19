@@ -19,6 +19,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:              db,
 		ConnectedPlayer: newConnectedPlayer(db, opts...),
+		InGamePrompt:    newInGamePrompt(db, opts...),
 		Room:            newRoom(db, opts...),
 		SchemaMigration: newSchemaMigration(db, opts...),
 	}
@@ -28,6 +29,7 @@ type Query struct {
 	db *gorm.DB
 
 	ConnectedPlayer connectedPlayer
+	InGamePrompt    inGamePrompt
 	Room            room
 	SchemaMigration schemaMigration
 }
@@ -38,6 +40,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:              db,
 		ConnectedPlayer: q.ConnectedPlayer.clone(db),
+		InGamePrompt:    q.InGamePrompt.clone(db),
 		Room:            q.Room.clone(db),
 		SchemaMigration: q.SchemaMigration.clone(db),
 	}
@@ -55,6 +58,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:              db,
 		ConnectedPlayer: q.ConnectedPlayer.replaceDB(db),
+		InGamePrompt:    q.InGamePrompt.replaceDB(db),
 		Room:            q.Room.replaceDB(db),
 		SchemaMigration: q.SchemaMigration.replaceDB(db),
 	}
@@ -62,6 +66,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 
 type queryCtx struct {
 	ConnectedPlayer *connectedPlayerDo
+	InGamePrompt    *inGamePromptDo
 	Room            *roomDo
 	SchemaMigration *schemaMigrationDo
 }
@@ -69,6 +74,7 @@ type queryCtx struct {
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		ConnectedPlayer: q.ConnectedPlayer.WithContext(ctx),
+		InGamePrompt:    q.InGamePrompt.WithContext(ctx),
 		Room:            q.Room.WithContext(ctx),
 		SchemaMigration: q.SchemaMigration.WithContext(ctx),
 	}

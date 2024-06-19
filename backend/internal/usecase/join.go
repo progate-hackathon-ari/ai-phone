@@ -31,7 +31,7 @@ func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) (*Jo
 	user := model.ConnectedPlayer{
 		RoomID:       roomID,
 		ConnectionID: uuid.NewString(),
-		PlayerIndex:  int32(len(players) + 1),
+		Index:        int32(len(players) + 1),
 		Username:     name,
 	}
 
@@ -59,7 +59,7 @@ func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) (*Jo
 
 	AddClient(i.client.ws, &user, roomID)
 
-	if err := BroadcastInRoom(roomID, []byte(fmt.Sprintf("player %d joined", user.PlayerIndex))); err != nil {
+	if err := BroadcastInRoom(roomID, []byte(fmt.Sprintf("player %d joined", user.Index))); err != nil {
 		return nil, err
 	}
 

@@ -4,13 +4,13 @@
 
 package model
 
-const TableNameConnectedPlayer = "connected_players"
+const TableNameConnectedPlayer = "connected_player"
 
-// ConnectedPlayer mapped from table <connected_players>
+// ConnectedPlayer mapped from table <connected_player>
 type ConnectedPlayer struct {
+	ConnectionID string `gorm:"column:connection_id;primaryKey" json:"connection_id"`
 	RoomID       string `gorm:"column:room_id;not null" json:"room_id"`
-	ConnectionID string `gorm:"column:connection_id;not null" json:"connection_id"`
-	PlayerIndex  int32  `gorm:"column:player_index;not null" json:"player_index"`
+	Index        int32  `gorm:"column:index;not null" json:"index"`
 	Username     string `gorm:"column:username;not null" json:"username"`
 }
 

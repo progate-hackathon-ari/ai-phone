@@ -27,9 +27,9 @@ func newConnectedPlayer(db *gorm.DB, opts ...gen.DOOption) connectedPlayer {
 
 	tableName := _connectedPlayer.connectedPlayerDo.TableName()
 	_connectedPlayer.ALL = field.NewAsterisk(tableName)
-	_connectedPlayer.RoomID = field.NewString(tableName, "room_id")
 	_connectedPlayer.ConnectionID = field.NewString(tableName, "connection_id")
-	_connectedPlayer.PlayerIndex = field.NewInt32(tableName, "player_index")
+	_connectedPlayer.RoomID = field.NewString(tableName, "room_id")
+	_connectedPlayer.Index = field.NewInt32(tableName, "index")
 	_connectedPlayer.Username = field.NewString(tableName, "username")
 
 	_connectedPlayer.fillFieldMap()
@@ -41,9 +41,9 @@ type connectedPlayer struct {
 	connectedPlayerDo connectedPlayerDo
 
 	ALL          field.Asterisk
-	RoomID       field.String
 	ConnectionID field.String
-	PlayerIndex  field.Int32
+	RoomID       field.String
+	Index        field.Int32
 	Username     field.String
 
 	fieldMap map[string]field.Expr
@@ -61,9 +61,9 @@ func (c connectedPlayer) As(alias string) *connectedPlayer {
 
 func (c *connectedPlayer) updateTableName(table string) *connectedPlayer {
 	c.ALL = field.NewAsterisk(table)
-	c.RoomID = field.NewString(table, "room_id")
 	c.ConnectionID = field.NewString(table, "connection_id")
-	c.PlayerIndex = field.NewInt32(table, "player_index")
+	c.RoomID = field.NewString(table, "room_id")
+	c.Index = field.NewInt32(table, "index")
 	c.Username = field.NewString(table, "username")
 
 	c.fillFieldMap()
@@ -94,9 +94,9 @@ func (c *connectedPlayer) GetFieldByName(fieldName string) (field.OrderExpr, boo
 
 func (c *connectedPlayer) fillFieldMap() {
 	c.fieldMap = make(map[string]field.Expr, 4)
-	c.fieldMap["room_id"] = c.RoomID
 	c.fieldMap["connection_id"] = c.ConnectionID
-	c.fieldMap["player_index"] = c.PlayerIndex
+	c.fieldMap["room_id"] = c.RoomID
+	c.fieldMap["index"] = c.Index
 	c.fieldMap["username"] = c.Username
 }
 

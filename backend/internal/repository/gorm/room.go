@@ -55,8 +55,9 @@ func (r *RoomRepository) GetRoom(ctx context.Context, roomID string) (*model.Roo
 
 func (r *RoomRepository) StartGame(ctx context.Context, roomID string) error {
 	updatedRoom := map[string]any{
-		"room_id":    roomID,
-		"is_started": true,
+		"room_id":      roomID,
+		"is_started":   true,
+		"current_game": 1,
 	}
 
 	return r.db.Model(&model.Room{}).Where("room_id = ?", roomID).Updates(updatedRoom).Error

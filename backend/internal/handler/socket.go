@@ -24,16 +24,13 @@ const (
 	EventJoin   Event = "join"
 	EventAnswer Event = "answer"
 	EventReady  Event = "ready"
+	EventNext   Event = "next"
 )
 
 type RequestMessage struct {
 	Event  Event  `json:"event"`
 	RoomID string `json:"room_id"`
 	Data   string `json:"data"`
-}
-
-type Ready struct {
-	Ready bool `json:"ready"`
 }
 
 type Join struct {
@@ -111,6 +108,10 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 
 			case EventReady:
 				if err := game.ReadyGame(ctx, message.RoomID); err != nil {
+					c.Logger().Error(err)
+				}
+			case EventNext:
+				if err := game.NextRound(ctx, message.RoomID); err != nil {
 					c.Logger().Error(err)
 				}
 			}

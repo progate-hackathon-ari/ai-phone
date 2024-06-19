@@ -10,6 +10,7 @@ type GormRepo struct {
 
 	*RoomRepository
 	*ConnectedPlayerRepository
+	*IngamePromptRepository
 }
 
 func NewGormDB(db *gorm.DB) *GormRepo {
@@ -17,6 +18,7 @@ func NewGormDB(db *gorm.DB) *GormRepo {
 		db:                        db,
 		RoomRepository:            NewRoomRepository(db),
 		ConnectedPlayerRepository: NewConnectedPlayerRepository(db),
+		IngamePromptRepository:    NewIngamePromptRepository(db),
 	}
 }
 
