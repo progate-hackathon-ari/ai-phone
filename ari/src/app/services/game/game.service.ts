@@ -12,19 +12,13 @@ export class GameService {
   }
 
   connect(roomId: string){
-    if (!this.ws) throw new Error('No connection');
-    this.connection = this.ws.connect(`ws://localhost:8080/game/${roomId}`)
+    if (!this.ws) throw new Error('No websocket service');
+    this.connection = this.ws.connect(`ws://localhost:8080/${roomId}`)
+    return this.connection
   }
 
   sendData(data: string): void {
     if (!this.ws) throw new Error('No connection');
     this.connection?.next(new MessageEvent('message', {data}));
-  }
-
-  recvData(){
-    if (!this.connection) throw new Error('No connection');
-    this.connection.asObservable().subscribe(data => {
-      console.log(data);
-    })
   }
 }
