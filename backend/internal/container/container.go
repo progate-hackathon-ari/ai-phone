@@ -30,7 +30,7 @@ func NewContainer() error {
 		{constructor: ariaws.NewConfig, opts: []dig.ProvideOption{}},
 		{constructor: s3.NewS3Repo, opts: []dig.ProvideOption{dig.As(new(s3.S3))}},
 		{constructor: bedrock.NewBedRock, opts: []dig.ProvideOption{dig.As(new(bedrock.Bedrock))}},
-		{constructor: usecase.NewCreateRoomInteractor, opts: []dig.ProvideOption{}},
+		{constructor: usecase.NewRoomInteractor, opts: []dig.ProvideOption{}},
 	}
 
 	for _, arg := range args {

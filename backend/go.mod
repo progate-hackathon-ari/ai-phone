@@ -13,6 +13,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/joho/godotenv v1.5.1
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/lib/pq v1.10.9
 	go.uber.org/dig v1.17.1
@@ -40,6 +41,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.25.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.29.0 // indirect
 	github.com/aws/smithy-go v1.20.2 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
@@ -57,6 +60,7 @@ require (
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
 	gorm.io/datatypes v1.2.1 // indirect
 	gorm.io/hints v1.1.2 // indirect
