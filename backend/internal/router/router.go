@@ -29,7 +29,7 @@ func NewRouter() http.Handler {
 	s3 := container.Invoke[s3.S3]()
 	bedrock := container.Invoke[bedrock.Bedrock]()
 
-	router.echo.GET("/game/:room_id", handler.SocketGameRoom(repo, s3, bedrock))
+	router.echo.GET("/game", handler.SocketGameRoom(repo, s3, bedrock))
 
 	corsRoute := router.echo.Group("")
 
