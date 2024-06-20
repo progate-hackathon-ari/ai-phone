@@ -1,0 +1,47 @@
+h1 {
+  color: black;
+  font-size: 80px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+}
+
+.playerButton{
+  background-color: #27acd9;
+  width: 295px;
+  height: 65px;
+  border-radius: 10px 10px 10px 10px;
+
+  padding-left: 30px;
+  text-align: left;
+  align-content: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.playerList {
+  display: flex;
+  flex-direction: column;
+
+  .playerButton{
+    margin-top: 15px;
+    color: white;
+  }
+}
+
+.chatMenu {
+  width: 800px;
+  height: 500px;
+  background-color: black;
+}
