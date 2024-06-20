@@ -33,16 +33,15 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 		return err
 	}
 
-	prompt, err = i.bedrock.BuildPrompt(ctx, strings.Join([]string{
+	resultPrompt, err := i.bedrock.BuildPrompt(ctx, strings.Join([]string{
 		prompt,
-		room.ExtraPrompt,
 		// 暗黙的な内部の追加プロンプトはここに書く
 	}, ","))
 	if err != nil {
 		return err
 	}
 
-	images, err := i.bedrock.GenerateImageFromText(ctx, prompt)
+	images, err := i.bedrock.GenerateImageFromText(ctx, strings.Join(resultPrompt.Prompt, ","), strings.Join(resultPrompt.NegativePrompt, ","), room.ExtraPrompt)
 	if err != nil {
 		return err
 	}

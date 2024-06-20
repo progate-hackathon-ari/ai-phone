@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"regexp"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/bedrockruntime"
@@ -58,6 +60,41 @@ func (s *BedrockService) TranslateToEnglish(ctx context.Context, prompt string) 
 	return s.requestPrompt(ctx, fmt.Sprintf("Human: Please translate this to english: %s \n\nAssistant:", prompt))
 }
 
-func (s *BedrockService) BuildPrompt(ctx context.Context, prompt string) (string, error) {
-	return s.requestPrompt(ctx, fmt.Sprintf("Human: Please output the best prompt in English that creates an image associated with this string using stable deffusion.: %s \n\nAssistant:", prompt))
+const DefaultRetry int = 5
+
+type Prompts struct {
+	Text           string   `json:"text"`
+	Prompt         []string `json:"prompts"`
+	NegativePrompt []string `json:"negative_prompts"`
+}
+
+func (s *BedrockService) BuildPrompt(ctx context.Context, prompt string) (*Prompts, error) {
+	for range DefaultRetry {
+		prompt, err := s.requestPrompt(ctx, fmt.Sprintf(`Human: <text> %s</text>
+		I want to translate it into English, generate prompts and negative prompts in JSON format, output only the data, and recreate {{text}} with stable diffusion.
+		
+		Assistant:
+		`, prompt))
+		if err != nil {
+			return nil, err
+		}
+
+		reg := regexp.MustCompile("```json([^`]*)```")
+		matches := reg.FindAllStringSubmatch(prompt, -1)
+
+		if len(matches) == 0 {
+			continue
+		}
+
+		jsonPrompt := strings.ReplaceAll(strings.ReplaceAll(matches[0][1], "```json", ""), "```", "")
+		log.Println(jsonPrompt)
+
+		var prompts Prompts
+		err = json.Unmarshal([]byte(jsonPrompt), &prompts)
+		if err == nil {
+			prompts.Prompt = append(prompts.Prompt, prompts.Text)
+			return &prompts, nil
+		}
+	}
+	return nil, fmt.Errorf("failed to build prompt")
 }
