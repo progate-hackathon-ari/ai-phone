@@ -32,7 +32,7 @@ const (
 
 type RequestMessage struct {
 	Event  Event  `json:"event"`
-	RoomID string `json:"room_id"`
+	RoomID string `json:"roomId"`
 	Data   string `json:"data"`
 }
 
