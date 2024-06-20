@@ -8,7 +8,10 @@ import { HttpService } from '../../serivce/http.service';
   styleUrl: './home-screen.component.scss'
 })
 export class HomeScreenComponent implements OnInit{
-  constructor(private gameService: GameService) {
+  constructor(
+    private gameService: GameService,
+    private http: HttpService,
+  ) {
   }
 
   send(data: string): void {
@@ -27,8 +30,7 @@ export class HomeScreenComponent implements OnInit{
 
     this.send('Hello')
     console.log('Home screen')
-  }  constructor(private http: HttpService){}
-
+  } 
   creatAndJoinRoom() {
     let room = this.http.CreateRoom();
 
