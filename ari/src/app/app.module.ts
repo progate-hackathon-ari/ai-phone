@@ -13,7 +13,7 @@ import { ResultMenuComponent } from './result-menu/result-menu.component';
   declarations: [
     AppComponent,
     HomeScreenComponent,
-    AdminUserComponent
+    AdminUserComponent,
     QuestionMenuComponent,
     AnswerMenuComponent,
     ResultMenuComponent
