@@ -32,27 +32,9 @@ h2 {
   background-color: #fff; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
-
-.start-button {
-  text-decoration: none;
-  margin-bottom: 100px;
-  width: 220px;
-  padding: 1rem 4rem;
-  font-weight: bold;
-  font-size: 50px;
-  color: $primary-color;
-  border-bottom: 2px solid $primary-color;
-  border-radius: 100vh;
-  box-shadow: $box-shadow;
-  -webkit-box-shadow: $box-shadow;
-  transition: $transition-duration;
-
-  &:hover {
-    color: #fff;
-    background: $primary-color;
-    border-bottom: 2px solid #fff;
-    transform: translateY(3px);
-  }
+.waiting-start{
+    font-size: 40px;
+    font-weight: bold;
 }
 
 .wait-user {
@@ -91,24 +73,4 @@ h2 {
     margin-bottom: 1rem;
   }
 
-  .fixed-value {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    p {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-    }
-
-    .fixed-input {
-      width: 300px; 
-      height: 100px; 
-      padding: 0.5rem;
-      border: 3px solid #000000;
-      border-radius: 4px;
-      font-size: 1rem;
-      resize: none;
-    }
-  }
 }
