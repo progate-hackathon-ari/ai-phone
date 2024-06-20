@@ -9,6 +9,7 @@ import { QuestionMenuComponent } from './question-menu/question-menu.component';
 import { AnswerMenuComponent } from './answer-menu/answer-menu.component';
 import { ResultMenuComponent } from './result-menu/result-menu.component';
 import { InvitedUserComponent } from './wait-room/invited-user/invited-user.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,11 +19,12 @@ import { InvitedUserComponent } from './wait-room/invited-user/invited-user.comp
     QuestionMenuComponent,
     AnswerMenuComponent,
     ResultMenuComponent,
-    InvitedUserComponent
+    InvitedUserComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
