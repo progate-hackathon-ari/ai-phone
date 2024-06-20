@@ -9,8 +9,8 @@ import { QuestionMenuComponent } from './question-menu/question-menu.component';
 import { AnswerMenuComponent } from './answer-menu/answer-menu.component';
 import { ResultMenuComponent } from './result-menu/result-menu.component';
 import { InvitedUserComponent } from './wait-room/invited-user/invited-user.component';
-import {WebSocketService} from "./services/websocket/websocket.service";
 import { HttpClientModule } from '@angular/common/http';
+import {GameService} from "./services/game/game.service";
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
   ],
   providers: [
-    WebSocketService
+    GameService
   ],
   bootstrap: [AppComponent]
 })
