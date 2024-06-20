@@ -31,11 +31,18 @@ $transition-duration: 0.5s;
 .url-input {
   margin-bottom: 1rem;
 }
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // gap: 20px;
+    width: 902px;
+}
 
 .create-button,
 .enter-button {
   text-decoration: none;
-  width: 120px;
+  width: 220px;
   padding: 1rem 4rem;
   font-weight: bold;
   color: $primary-color;
@@ -44,6 +51,11 @@ $transition-duration: 0.5s;
   box-shadow: $box-shadow;
   -webkit-box-shadow: $box-shadow;
   transition: $transition-duration;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
 
   &:hover {
     color: #fff;
@@ -51,8 +63,11 @@ $transition-duration: 0.5s;
     border-bottom: 2px solid #fff;
     transform: translateY(3px);
   }
-}
 
+  &:focus {
+    outline: none;
+  }
+}
 .create-button {
   margin-right: 180px;
 }

@@ -34,26 +34,35 @@ h2 {
 }
 
 .start-button {
-  text-decoration: none;
-  margin-bottom: 100px;
-  width: 220px;
-  padding: 1rem 4rem;
-  font-weight: bold;
-  font-size: 50px;
-  color: $primary-color;
-  border-bottom: 2px solid $primary-color;
-  border-radius: 100vh;
-  box-shadow: $box-shadow;
-  -webkit-box-shadow: $box-shadow;
-  transition: $transition-duration;
-
-  &:hover {
-    color: #fff;
-    background: $primary-color;
-    border-bottom: 2px solid #fff;
-    transform: translateY(3px);
+    text-decoration: none;
+    margin-bottom: 100px;
+    width: 320px;
+    padding: 1rem 4rem;
+    font-weight: bold;
+    font-size: 50px;
+    color: $primary-color;
+    border-bottom: 2px solid $primary-color;
+    border-radius: 100vh;
+    box-shadow: $box-shadow;
+    -webkit-box-shadow: $box-shadow;
+    transition: $transition-duration;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+  
+    &:hover {
+      color: #fff;
+      background: $primary-color;
+      border-bottom: 2px solid #fff;
+      transform: translateY(3px);
+    }
+  
+    &:focus {
+      outline: none;
+    }
   }
-}
 
 .wait-user {
   display: flex;
