@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
-import { HttpService } from '../../serivce/http.service';
+import { HttpService } from '../../services/http/http.service';
 
 @Component({
   selector: 'app-home-screen',
@@ -20,17 +20,15 @@ export class HomeScreenComponent implements OnInit{
     );
   }
 
-
   ngOnInit() {
-    console.log('Home screen')
-    this.gameService.connect('/').subscribe(data => {
-      console.log('Home screen')
+    console.log("home screen init");
+    this.gameService.connect().subscribe(data => {
       console.log(data);
     })
-
-    this.send('Hello')
-    console.log('Home screen')
+    console.log("send join");
+    this.gameService.sendJoin("019034c5-2936-73c7-901c-3ee4480729c9","hoge");
   } 
+  
   creatAndJoinRoom() {
     let room = this.http.CreateRoom();
 
@@ -40,7 +38,6 @@ export class HomeScreenComponent implements OnInit{
   }
 
   joinRoom(roomId: string) {
-    // このタイミングでws確立させて join room を行う
     console.log(roomId);
   }
 }
