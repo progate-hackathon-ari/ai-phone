@@ -2,9 +2,11 @@ package usecase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/progate-hackathon-ari/backend/internal/aerror"
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
 )
 
@@ -13,19 +15,19 @@ type JoinRoomResult struct {
 	Players      []model.ConnectedPlayer `json:"players"`
 }
 
-func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) (*JoinRoomResult, error) {
+func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) error {
 	players, err := i.repo.GetConnectedPlayers(ctx, roomID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	room, err := i.repo.GetRoom(ctx, roomID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if room.IsStarted {
-		return nil, fmt.Errorf("game started")
+		return fmt.Errorf("game started")
 	}
 
 	user := model.ConnectedPlayer{
@@ -36,7 +38,7 @@ func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) (*Jo
 	}
 
 	if err := i.repo.CreateConnectedPlayer(ctx, user); err != nil {
-		return nil, err
+		return err
 	}
 
 	i.client.info = &user
@@ -54,17 +56,18 @@ func (i *GameInteractor) JoinRoom(ctx context.Context, roomID, name string) (*Jo
 		RoomID:   roomID,
 		GameSize: int32(gamesize),
 	}); err != nil {
-		return nil, err
+		return err
 	}
 
 	AddClient(i.client.ws, &user, roomID)
 
-	if err := BroadcastInRoom(roomID, []byte(fmt.Sprintf("player %d joined", user.Index))); err != nil {
-		return nil, err
-	}
-
-	return &JoinRoomResult{
+	data, err := json.Marshal(&JoinRoomResult{
 		ConnectionID: user.ConnectionID,
 		Players:      players,
-	}, nil
+	})
+	if err != nil {
+		return aerror.ErrFaliedMarshal
+	}
+
+	return BroadcastInRoom(roomID, data)
 }

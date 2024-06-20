@@ -14,10 +14,6 @@ type AnswerResponse struct {
 }
 
 func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt string) error {
-	fmt.Println("rooms", Rooms)
-	fmt.Println("rooms :id", Rooms[roomID])
-	fmt.Println("rooms :id, player", Rooms[roomID].Players)
-	fmt.Println("rooms :id, player :id", Rooms[roomID].Players[i.client.info.ConnectionID])
 	// 2回目も防ぐ
 	if Rooms[roomID].Players[i.client.info.ConnectionID].IsAnswered {
 		return fmt.Errorf("already answered")
