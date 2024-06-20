@@ -10,17 +10,17 @@ import (
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
 )
 
-type CreateRoomInteractor struct {
+type RoomInteractor struct {
 	repository repository.DataAccess
 }
 
-func NewCreateRoomInteractor(repository repository.DataAccess) *CreateRoomInteractor {
-	return &CreateRoomInteractor{
+func NewRoomInteractor(repository repository.DataAccess) *RoomInteractor {
+	return &RoomInteractor{
 		repository: repository,
 	}
 }
 
-func (i *CreateRoomInteractor) CreateRoom(ctx context.Context, extraPrompts string) (*model.Room, error) {
+func (i *RoomInteractor) CreateRoom(ctx context.Context) (*model.Room, error) {
 
 	roomID, err := uuid.NewV7()
 	if err != nil {
@@ -29,7 +29,6 @@ func (i *CreateRoomInteractor) CreateRoom(ctx context.Context, extraPrompts stri
 
 	room := &model.Room{
 		RoomID:      roomID.String(),
-		ExtraPrompt: extraPrompts,
 		IsStarted:   false,
 		GameSize:    1,
 		CurrentGame: 0,
@@ -37,6 +36,25 @@ func (i *CreateRoomInteractor) CreateRoom(ctx context.Context, extraPrompts stri
 
 	if err := i.repository.CreateRoom(ctx, room); err != nil {
 		return nil, errors.Join(err, fmt.Errorf("failed to create room"))
+	}
+
+	return room, nil
+}
+
+func (i *RoomInteractor) UpdateRoom(ctx context.Context, roomID, extraPrompt string) (*model.Room, error) {
+	if extraPrompt == "" {
+		extraPrompt = "\n"
+	}
+
+	room := &model.Room{
+		RoomID:      roomID,
+		ExtraPrompt: extraPrompt,
+		GameSize:    -1,
+		CurrentGame: -1,
+	}
+
+	if err := i.repository.UpdateRoom(ctx, room); err != nil {
+		return nil, errors.Join(err, fmt.Errorf("failed to update room"))
 	}
 
 	return room, nil

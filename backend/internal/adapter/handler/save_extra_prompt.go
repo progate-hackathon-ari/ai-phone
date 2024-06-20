@@ -8,22 +8,33 @@ import (
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 )
 
-type CreateRoomResponse struct {
+type UpdateRoomRequest struct {
+	RoomID      string `param:"room_id"`
+	ExtraPrompt string `json:"extraPrompt"`
+}
+
+type UpdateRoomResponse struct {
 	RoomID      string `json:"roomId"`
 	ExtraPrompt string `json:"extraPrompt"`
 }
 
-func CreateRoom(i *usecase.RoomInteractor) echo.HandlerFunc {
+func UpdateRoom(i *usecase.RoomInteractor) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
 
-		room, err := i.CreateRoom(ctx)
+		var req UpdateRoomRequest
+		if err := c.Bind(&req); err != nil {
+			log.Error(ctx, "failed to bind request", err)
+			return echo.ErrBadRequest
+		}
+
+		room, err := i.UpdateRoom(ctx, req.RoomID, req.ExtraPrompt)
 		if err != nil {
 			log.Error(ctx, "faled to create room", err)
 			return echo.ErrInternalServerError
 		}
 
-		return c.JSON(http.StatusOK, CreateRoomResponse{
+		return c.JSON(http.StatusOK, UpdateRoomResponse{
 			RoomID:      room.RoomID,
 			ExtraPrompt: room.ExtraPrompt,
 		})

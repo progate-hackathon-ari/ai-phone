@@ -10,6 +10,7 @@ import { AnswerMenuComponent } from './answer-menu/answer-menu.component';
 import { ResultMenuComponent } from './result-menu/result-menu.component';
 import { InvitedUserComponent } from './wait-room/invited-user/invited-user.component';
 import {WebSocketService} from "./services/websocket/websocket.service";
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,12 @@ import {WebSocketService} from "./services/websocket/websocket.service";
     QuestionMenuComponent,
     AnswerMenuComponent,
     ResultMenuComponent,
-    InvitedUserComponent
+    InvitedUserComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [
     WebSocketService

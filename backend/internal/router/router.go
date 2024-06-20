@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/handler"
-	"github.com/progate-hackathon-ari/backend/internal/adapter/middleware"
 	"github.com/progate-hackathon-ari/backend/internal/container"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 )
@@ -33,11 +33,12 @@ func NewRouter() http.Handler {
 
 	corsRoute := router.echo.Group("")
 
-	corsRoute.Use(middleware.AllowAllOrigins())
+	corsRoute.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 	{
-		cri := container.Invoke[*usecase.CreateRoomInteractor]()
+		cri := container.Invoke[*usecase.RoomInteractor]()
 		// create room
 		corsRoute.POST("/room", handler.CreateRoom(cri))
+		corsRoute.POST("/room/:room_id", handler.UpdateRoom(cri))
 
 	}
 
