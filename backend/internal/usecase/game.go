@@ -30,19 +30,31 @@ func NewGameInteractor(ws *websocket.Conn, repo repository.DataAccess, s3 s3.S3,
 	}
 }
 
-func (i *GameInteractor) CountDown(ctx context.Context, count int) ( error) {
-	return Counter(i.client.info.RoomID,count)
+func (i *GameInteractor) CountDown(ctx context.Context, count int) error {
+	return Counter(i.client.info.RoomID, count)
 }
 
 const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
 
+type NextState string
+
+const (
+	StateNextRound NextState = "next_round"
+	StateGameEnd   NextState = "game_end"
+)
+
+type NextResponse[T NextRoundImage | EndGame] struct {
+	State NextState `json:"state"`
+	Data  T         `json:"data"`
+}
+
 type NextRoundImage struct {
-	ImageURI string `json:"imageUri"`
+	ImageURI string `json:"image_uri"`
 }
 
 type OneGame struct {
 	Prompt   string `json:"prompt"`
-	ImageURI string `json:"imageUri"`
+	ImageURI string `json:"image_uri"`
 }
 
 type EndGame struct {
@@ -88,7 +100,12 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			}
 		}
 
-		data, err := json.Marshal(EndGame{Result: resultMap})
+		data, err := json.Marshal(&NextResponse[EndGame]{
+			State: StateGameEnd,
+			Data: EndGame{
+				Result: resultMap,
+			},
+		})
 		if err != nil {
 			return err
 		}
@@ -130,7 +147,12 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 }
 
 func sendImage(roomID, connectionID string, imageURI string) error {
-	data, err := json.Marshal(&NextRoundImage{ImageURI: imageURI})
+	data, err := json.Marshal(&NextResponse[NextRoundImage]{
+		State: StateNextRound,
+		Data: NextRoundImage{
+			ImageURI: imageURI,
+		},
+	})
 	if err != nil {
 		return err
 	}

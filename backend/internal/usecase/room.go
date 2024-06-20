@@ -94,7 +94,7 @@ func SendMessageByID(roomID, connectionID string, message []byte) error {
 }
 
 type Countdown struct {
-	IsDone bool `json:"isDone"`
+	IsDone bool `json:"is_done"`
 	Count  int  `json:"count"`
 }
 

@@ -10,7 +10,7 @@ import (
 )
 
 type AnswerResponse struct {
-	IsAllUserAnswered bool `json:"isAllUserAnswered"`
+	IsAllUserAnswered bool `json:"is_all_user_answered"`
 }
 
 func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt string) error {
