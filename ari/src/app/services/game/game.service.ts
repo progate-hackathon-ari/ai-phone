@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs";
-import {WebSocketService} from "../websocket/websocket.service";
+import {webSocket} from "rxjs/webSocket";
 
 enum EventType {
   EventJoin = 'join',
@@ -23,13 +23,12 @@ type MessageTemplate = {
 export class GameService {
   connection: Subject<string> | undefined
 
-  constructor(private ws: WebSocketService) {
-  }
-
   connect(){
-    if (!this.ws) throw new Error('No websocket service');
     // TODO: envからendpointを取るようにする
-    this.connection = this.ws.connect(`ws://localhost:8080/game`)
+    this.connection = webSocket({
+      url: `ws://localhost:8080/game`,
+      deserializer: (e: MessageEvent) => e.data,
+    })
     return this.connection
   }
 
@@ -95,7 +94,9 @@ export class GameService {
 
   // backendがjsonとしてparseできるようにbase64でエンコード
   sendData(data: string): void {
-    if (!this.ws) throw new Error('No connection');
-    this.connection?.next(btoa(data))
+    if (!this.connection) {
+      throw new Error('connection is not initialized')
+    }
+    this.connection.next(btoa(data))
   }
 }
