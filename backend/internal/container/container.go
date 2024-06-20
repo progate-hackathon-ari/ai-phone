@@ -3,12 +3,12 @@ package container
 import (
 	"log"
 
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository/gorm"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
 	ariaws "github.com/progate-hackathon-ari/backend/internal/driver/ari_aws"
 	"github.com/progate-hackathon-ari/backend/internal/driver/db"
-	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
-	"github.com/progate-hackathon-ari/backend/internal/external/s3"
-	"github.com/progate-hackathon-ari/backend/internal/repository"
-	"github.com/progate-hackathon-ari/backend/internal/repository/gorm"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 	"go.uber.org/dig"
 )

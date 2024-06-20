@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/handler"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/middleware"
 	"github.com/progate-hackathon-ari/backend/internal/container"
-	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
-	"github.com/progate-hackathon-ari/backend/internal/external/s3"
-	"github.com/progate-hackathon-ari/backend/internal/handler"
-	"github.com/progate-hackathon-ari/backend/internal/middleware"
-	"github.com/progate-hackathon-ari/backend/internal/repository"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 )
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
-	"github.com/progate-hackathon-ari/backend/internal/repository"
 )
 
 type CreateRoomInteractor struct {

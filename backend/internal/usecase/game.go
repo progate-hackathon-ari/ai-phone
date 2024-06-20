@@ -6,10 +6,10 @@ import (
 	"fmt"
 
 	"github.com/gorilla/websocket"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
-	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
-	"github.com/progate-hackathon-ari/backend/internal/external/s3"
-	"github.com/progate-hackathon-ari/backend/internal/repository"
 )
 
 type GameInteractor struct {

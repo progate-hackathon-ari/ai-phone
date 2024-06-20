@@ -7,9 +7,9 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
-	"github.com/progate-hackathon-ari/backend/internal/external/bedrock"
-	"github.com/progate-hackathon-ari/backend/internal/external/s3"
-	"github.com/progate-hackathon-ari/backend/internal/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
 	"github.com/progate-hackathon-ari/backend/internal/usecase"
 	"github.com/progate-hackathon-ari/backend/pkg/log"
 )

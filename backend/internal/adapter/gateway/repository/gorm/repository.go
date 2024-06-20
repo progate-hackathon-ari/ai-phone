@@ -1,7 +1,7 @@
 package gorm
 
 import (
-	"github.com/progate-hackathon-ari/backend/internal/repository"
+	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
 	"gorm.io/gorm"
 )
 
