@@ -13,6 +13,8 @@ export class AppComponent{
   title = 'ari';
 
   constructor(private router: Router, private navigationService: NavigationService) {
+    this.navigationService.previousUrl = document.referrer;
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
