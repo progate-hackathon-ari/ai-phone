@@ -30,6 +30,10 @@ func NewGameInteractor(ws *websocket.Conn, repo repository.DataAccess, s3 s3.S3,
 	}
 }
 
+func (i *GameInteractor) CountDown(ctx context.Context, count int) ( error) {
+	return Counter(i.client.info.RoomID,count)
+}
+
 const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
 
 type NextRoundImage struct {
