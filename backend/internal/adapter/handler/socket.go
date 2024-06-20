@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -67,19 +70,23 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 				log.Error(ctx, "falied to read message", "error", err)
 				return err
 			}
+			fmt.Println(string(msg))
 
-			var message RequestMessage
-			if err = json.Unmarshal(msg, &message); err != nil {
-				log.Error(ctx, "json unmarshal error", "error", err)
+			msg = bytes.ReplaceAll(msg, []byte("\""), []byte(""))
+			// decode base64
+
+			message, err := unmarshal[RequestMessage](string(msg))
+			if err != nil {
+				log.Error(ctx, "failed to unmarshal or decode message", "error", err)
+				return err
 			}
-
-			log.Debug(ctx, "message", message)
 
 			switch message.Event {
 			case EventJoin:
-				var join Join
-				if err = json.Unmarshal([]byte(message.Data), &join); err != nil {
-					log.Error(ctx, "json unmarshal (2) error", "error", err)
+				join, err := unmarshal[Join](message.Data)
+				if err != nil {
+					log.Error(ctx, "failed to unmarshal or decode message", "error", err)
+					return err
 				}
 
 				if err := game.JoinRoom(ctx, message.RoomID, join.Name); err != nil {
@@ -91,9 +98,10 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 				}
 
 			case EventAnswer:
-				var answer Answer
-				if err = json.Unmarshal([]byte(message.Data), &answer); err != nil {
-					log.Error(ctx, "json unmarshal (2) error", "error", err)
+				answer, err := unmarshal[Answer](message.Data)
+				if err != nil {
+					log.Error(ctx, "failed to unmarshal or decode message", "error", err)
+					return err
 				}
 
 				if err := game.ImageGenerate(ctx, message.RoomID, answer.Answer); err != nil {
@@ -110,9 +118,10 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 					log.Error(ctx, "failed to next round", "error", err)
 				}
 			case EventCountDown:
-				var count CountDown
-				if err = json.Unmarshal([]byte(message.Data), &count); err != nil {
-					log.Error(ctx, "json unmarshal (2) error", "error", err)
+				count, err := unmarshal[CountDown](message.Data)
+				if err != nil {
+					log.Error(ctx, "failed to unmarshal or decode message", "error", err)
+					return err
 				}
 
 				if err := game.CountDown(ctx, count.Count); err != nil {
@@ -121,4 +130,18 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 			}
 		}
 	}
+}
+
+func unmarshal[T any](s string) (T, error) {
+	msg, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		return *new(T), err
+	}
+
+	var t T
+	if err = json.Unmarshal(msg, &t); err != nil {
+		return *new(T), err
+	}
+
+	return t, nil
 }
