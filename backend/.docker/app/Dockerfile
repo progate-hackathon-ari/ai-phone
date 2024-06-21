@@ -7,11 +7,11 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main cmd/app/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main cmd/app/main.go
 
-FROM ubuntu:slim AS runner
+FROM gcr.io/distroless/base-debian11 AS runner
 WORKDIR /app
 
-COPY --from=builder main main
+COPY --from=builder build/main main
 
 CMD ["./main"]
