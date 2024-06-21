@@ -33,7 +33,7 @@ export class AdminUserComponent implements OnInit{
   }
   onClickStart(){
     this.gameService.sendReady()
-    this.gameService.connect()
+    this.gameService.connect().unsubscribe()
     this.router.navigateByUrl("/countdown").then()
   }
 }
