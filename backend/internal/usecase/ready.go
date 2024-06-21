@@ -23,6 +23,10 @@ func (i *GameInteractor) ReadyGame(ctx context.Context, roomID string) error {
 		return err
 	}
 
+	if err := dunnyBloadCast(roomID); err != nil {
+		return err
+	}
+
 	Counter(roomID, 5)
 
 	return nil
