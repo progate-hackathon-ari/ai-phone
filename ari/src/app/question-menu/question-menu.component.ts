@@ -15,9 +15,9 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   Subs: Subscription | undefined;
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
-      this.router.navigateByUrl('/home').then()
-    }
+    // if (!this.gameService.connection) {
+    //   this.router.navigateByUrl('/home').then()
+    // }
 
     this.dsub = this.dataSubscribe.subscribe();
 
