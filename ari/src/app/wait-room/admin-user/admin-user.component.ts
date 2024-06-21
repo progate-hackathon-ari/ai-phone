@@ -16,7 +16,7 @@ interface PlayerData {
   styleUrl: './admin-user.component.scss'
 })
 export class AdminUserComponent implements OnInit , OnDestroy{
-  constructor(private router: Router, private gameService: GameService, private dataSubs: dataSubscribe) {
+  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe) {
 
   }
 
@@ -30,7 +30,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
       this.router.navigateByUrl('/home').then()
     }
 
-    this.dsub = this.dataSubs.subscribe();
+    this.dsub = this.dataSubscribe.subscribe();
 
     this.Subs = this.dsub.subscribe(data => {
         const json = JSON.parse(data)

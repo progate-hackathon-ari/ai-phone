@@ -16,8 +16,8 @@ const routes: Routes = [
     {path: 'admin', component: AdminUserComponent},
     {path: "result", component:ResultMenuComponent},
     {path: 'invited', component: InvitedUserComponent},
-    {path: "countdown", component:CountdownComponent}
-    {path : 'invited-home', component: InvitedHomeScreenComponent}
+    {path: "countdown", component:CountdownComponent},
+    {path : 'invited-home', component: InvitedHomeScreenComponent},
 ];
 
 @NgModule({
