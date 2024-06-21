@@ -19,4 +19,10 @@ export class AdminUserComponent implements OnInit{
       console.log(data)
     })
   }
+
+  selectedOption: string = 'option1'; // デフォルト値を設定
+
+  selectOption(option: string): void {
+    this.selectedOption = option;
+  }
 }

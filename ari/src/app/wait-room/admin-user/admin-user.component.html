@@ -1,25 +1,73 @@
-<h2>ルームID</h2>
 <body>
-    <div class="container">
-      <button class="start-button">START</button>
+  <div class="container">
+    <button class="start-button">START</button>
+    <div class="playerandbutton">
       <div class="wait-user">
-        <ul>
-          <input type="text" class="user-input" value="https//hogehoge">
-          <p class="user-title">プレイヤー一覧</p>
-          <li>user1</li>
-          <li>user2</li>
-          <li>user3</li>
-          <li>user4</li>
-          <li>user5</li>
-          <li>user6</li>
-        </ul>
-        <div class="fixed-value">
-            <p>固定値</p>
-            <div class="textarea-container">
-              <textarea class="fixed-input"></textarea>
-              <button class="save-button">保存する</button>
-            </div>
-          </div>
+          <button class="invite-button">招待URL</button>
+          <ul>
+              <p class="user-title">プレイヤー一覧</p>
+              <li>user1</li>
+              <li>user2</li>
+              <li>user3</li>
+              <li>user4</li>
+              <li>user5</li>
+              <li>user6</li>
+            </ul>
+        </div>
+        <div class="radio-section">
+            <h2>画像のテーマを選ぼう！</h2>
+            <p>選択中のテーマ：{{ selectedOption }}</p>
+        <div class="radio-group">
+          <button type="button" (click)="selectOption('option1')" [class.selected]="selectedOption === 'option1'">
+            <img src="assets/sample.jpeg" alt="Option 1" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option2')" [class.selected]="selectedOption === 'option2'">
+            <img src="assets/sample.jpeg" alt="Option 2" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option3')" [class.selected]="selectedOption === 'option3'">
+            <img src="assets/sample.jpeg" alt="Option 3" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option4')" [class.selected]="selectedOption === 'option4'">
+            <img src="assets/sample.jpeg" alt="Option 4" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option5')" [class.selected]="selectedOption === 'option5'">
+            <img src="assets/sample.jpeg" alt="Option 5" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option6')" [class.selected]="selectedOption === 'option6'">
+            <img src="assets/sample.jpeg" alt="Option 6" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option7')" [class.selected]="selectedOption === 'option7'">
+            <img src="assets/sample.jpeg" alt="Option 7" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option8')" [class.selected]="selectedOption === 'option8'">
+            <img src="assets/sample.jpeg" alt="Option 8" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option9')" [class.selected]="selectedOption === 'option9'">
+            <img src="assets/sample.jpeg" alt="Option 9" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option10')" [class.selected]="selectedOption === 'option10'">
+            <img src="assets/sample.jpeg" alt="Option 10" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option11')" [class.selected]="selectedOption === 'option11'">
+            <img src="assets/sample.jpeg" alt="Option 11" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option12')" [class.selected]="selectedOption === 'option12'">
+            <img src="assets/sample.jpeg" alt="Option 12" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option13')" [class.selected]="selectedOption === 'option13'">
+            <img src="assets/sample.jpeg" alt="Option 13" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option14')" [class.selected]="selectedOption === 'option14'">
+            <img src="assets/sample.jpeg" alt="Option 14" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option15')" [class.selected]="selectedOption === 'option15'">
+            <img src="assets/sample.jpeg" alt="Option 15" class="radio-image">
+          </button>
+          <button type="button" (click)="selectOption('option16')" [class.selected]="selectedOption === 'option16'">
+            <img src="assets/sample.jpeg" alt="Option 16" class="radio-image">
+          </button>
+        </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
