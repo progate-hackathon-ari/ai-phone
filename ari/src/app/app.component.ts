@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationStart, Router} from "@angular/router";
-import {GameService} from "./services/game/game.service";
 import {NavigationService} from "./services/navigation/navigation.service";
+import { GameService } from './services/game/game.service';
 
 
 @Component({
@@ -30,12 +30,6 @@ export class AppComponent implements OnInit{
         }
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.Subs) {
-      this.Subs.unsubscribe();
-    }
   }
 
   ngOnInit(): void {
