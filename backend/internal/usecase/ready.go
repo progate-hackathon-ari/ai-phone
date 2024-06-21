@@ -23,7 +23,7 @@ func (i *GameInteractor) ReadyGame(ctx context.Context, roomID string) error {
 		return err
 	}
 
-	if err := dunnyBloadCast(roomID); err != nil {
+	if err := dunnyBloadCast(roomID, StateStartGame); err != nil {
 		return err
 	}
 
