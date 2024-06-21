@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {GameService, dataSubscribe} from "../../services/game/game.service";
 import { Observable, Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ interface PlayerData {
   templateUrl: './invited-user.component.html',
   styleUrl: './invited-user.component.scss'
 })
-export class InvitedUserComponent implements OnInit{
+export class InvitedUserComponent implements OnInit, OnDestroy{
   constructor(private router:Router,private gameService: GameService,private dataSubs: dataSubscribe) {
   }
   players: PlayerData[] = []
