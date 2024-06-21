@@ -1,3 +1,14 @@
+$primary-color: #27acd9;
+$border-radius: 4px;
+$font-size: 1rem;
+$input-height: 30px;
+$input-padding: 0.5rem;
+$box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+$transition-duration: 0.5s;
+
+
+
+
 h1{
     display: flex;
     justify-content: right;
@@ -51,12 +62,21 @@ body {
   .input-zone .button {
     padding: 10px 20px;
     height: 60px;
+    padding: 10px 20px;
     font-size: 1.5rem;
-    background-color: #3498db;
+    background-color: $primary-color;
+    box-shadow: $box-shadow;
+    -webkit-box-shadow: $box-shadow;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
+    transition: $transition-duration;
+    &:hover {
+        color: $primary-color;
+        background: white;
+        border-bottom: 2px solid #fff;
+        transform: translateY(3px);
+      }
   }
   
