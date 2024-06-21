@@ -32,10 +32,17 @@ func NewAILessBedRock() *AILessService {
 }
 
 func (r *AILessService) GenerateImageFromText(ctx context.Context, prompt, negativePrompt, style string) ([][]byte, error) {
-	return nil, nil
+	return [][]byte{
+		[]byte("ok"),
+		[]byte("ok"),
+		[]byte("ok"),
+	}, nil
 }
 
 // Cloude
 func (r *AILessService) BuildPrompt(ctx context.Context, prompt string) (*Prompts, error) {
-	return nil, nil
+	return &Prompts{
+		Prompt:         prompt,
+		NegativePrompt: prompt,
+	}, nil
 }
