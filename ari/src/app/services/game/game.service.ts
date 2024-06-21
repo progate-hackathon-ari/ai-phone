@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import {Subject} from "rxjs";
-import {webSocket} from "rxjs/webSocket";
+import {Injectable} from '@angular/core';
+import {webSocket, WebSocketSubject} from "rxjs/webSocket";
+import {Observable, Subject} from "rxjs";
 
 enum EventType {
   EventJoin = 'join',
@@ -21,15 +21,31 @@ type MessageTemplate = {
   providedIn: 'root'
 })
 export class GameService {
-  connection: Subject<string> | undefined
+  connection: WebSocketSubject<string> | undefined
+  roomId: string | undefined
+  subscriptions: Observable<string>[] =[]
+
+  constructor(private dataSubs: dataSubscribe){}
 
   connect(){
     // TODO: envからendpointを取るようにする
-    this.connection = webSocket({
-      url: `ws://localhost:8080/game`,
-      deserializer: (e: MessageEvent) => e.data,
-    })
-    return this.connection
+    if (!this.connection) {
+      this.connection = webSocket({
+        url: `ws://localhost:8080/game`,
+        deserializer: (e: MessageEvent) => e.data,
+      })
+    }
+    this.connection.subscribe(data => {
+      this.dataSubs.dataSubject.next(data);
+    });
+  }
+
+  removeSubscribe(): void {
+    for (let i = 0; i < this.subscriptions.length - 1; i++) {
+      this.subscriptions[i].subscribe().unsubscribe()
+    }
+
+    this.subscriptions.length = 1
   }
 
   sendJoin(roomId: string, name: string): void {
@@ -44,59 +60,86 @@ export class GameService {
     }
 
     this.sendData(JSON.stringify(message))
+    this.roomId = roomId
   }
 
-  sendAnswer(roomId: string, answer: string): void {
+  sendAnswer(answer: string): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let data = JSON.stringify({
       answer: answer,
     })
 
     let message: MessageTemplate = {
       event: EventType.EventAnswer,
-      roomId: roomId,
+      roomId: this.roomId,
       data: btoa(data),
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendReady(roomId: string): void {
+  sendReady(): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let message: MessageTemplate = {
       event: EventType.EventReady,
-      roomId: roomId,
+      roomId: this.roomId,
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendNext(roomId: string): void {
+  sendNext(): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let message: MessageTemplate = {
       event: EventType.EventNext,
-      roomId: roomId,
+      roomId: this.roomId,
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendCountDown(roomId: string, count: number): void {
+  sendCountDown(count: number): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let data = JSON.stringify({
       count: count,
     })
 
     let message: MessageTemplate = {
       event: EventType.EventCountDown,
-      roomId: roomId,
+      roomId: this.roomId,
       data: btoa(data),
     }
 
     this.sendData(JSON.stringify(message))
   }
-
-  // backendがjsonとしてparseできるようにbase64でエンコード
   sendData(data: string): void {
     if (!this.connection) {
       throw new Error('connection is not initialized')
     }
     this.connection.next(btoa(data))
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class dataSubscribe {
+  constructor () {}
+  dataSubject = new Subject<any>();
+
+  subscribe() {
+    return this.dataSubject.asObservable();
   }
 }

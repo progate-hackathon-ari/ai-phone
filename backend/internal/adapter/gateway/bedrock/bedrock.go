@@ -9,10 +9,9 @@ import (
 
 type Bedrock interface {
 	// SDXL1.0
-	GenerateImageFromText(ctx context.Context, prompt string) ([][]byte, error)
+	GenerateImageFromText(ctx context.Context, prompt, negativePrompt, style string) ([][]byte, error)
 	// Cloude
-	TranslateToEnglish(ctx context.Context, prompt string) (string, error)
-	BuildPrompt(ctx context.Context, prompt string) (string, error)
+	BuildPrompt(ctx context.Context, prompt string) (*Prompts, error)
 }
 
 type BedrockService struct {
