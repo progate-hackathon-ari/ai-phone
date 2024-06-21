@@ -6,6 +6,7 @@ import {QuestionMenuComponent} from "./question-menu/question-menu.component";
 import {AnswerMenuComponent} from "./answer-menu/answer-menu.component";
 import {ResultMenuComponent} from "./result-menu/result-menu.component";
 import {InvitedUserComponent} from "./wait-room/invited-user/invited-user.component";
+import {CountdownComponent} from "./countdown/countdown.component";
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeScreenComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
     {path: "answer", component:AnswerMenuComponent},
     {path: 'admin', component: AdminUserComponent},
     {path: "result", component:ResultMenuComponent},
-    {path: 'invited', component: InvitedUserComponent}
+    {path: 'invited', component: InvitedUserComponent},
+    {path: "countdown", component:CountdownComponent}
 ];
 
 @NgModule({
