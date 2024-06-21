@@ -6,12 +6,9 @@
         <ul>
           <input type="text" class="user-input" value="https//hogehoge">
           <p class="user-title">プレイヤー一覧</p>
-          <li>user1</li>
-          <li>user2</li>
-          <li>user3</li>
-          <li>user4</li>
-          <li>user5</li>
-          <li>user6</li>
+          <div *ngFor="let player of players">
+            <li>{{player.username}}</li>
+          </div>
         </ul>
       </div>
     </div>
