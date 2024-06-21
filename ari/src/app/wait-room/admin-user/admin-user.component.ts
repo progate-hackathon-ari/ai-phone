@@ -37,11 +37,9 @@ export class AdminUserComponent implements OnInit {
   onClickStart() {
     this.gameService.sendReady()
     this.router.navigateByUrl("/countdown").then(()=>{
-      if (this.subscription){
-        setTimeout(() => {
-          this.subscription?.unsubscribe()
-        },1000)
-      }
+      setTimeout(()=>{
+        this.subscription?.unsubscribe()
+      },1000)
     })
   }
 }

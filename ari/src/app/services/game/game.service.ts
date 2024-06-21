@@ -23,6 +23,7 @@ type MessageTemplate = {
 export class GameService {
   connection: WebSocketSubject<string> | undefined
   roomId: string | undefined
+  subscriptions: Observable<string>[] =[]
 
   connect(): WebSocketSubject<string>{
     // TODO: envからendpointを取るようにする
@@ -35,12 +36,23 @@ export class GameService {
     return this.connection
   }
 
-  getSubscribe(): Observable<string> {
+  getSubscribe(): Observable<string>{
     if (!this.connection) {
       throw new Error('connection is not initialized')
     }
 
-    return new generateMultiplexWebSocket(this.connection).getObservable()
+    const subscribe = new generateMultiplexWebSocket(this.connection).getObservable()
+    this.subscriptions.push(subscribe)
+
+    return subscribe
+  }
+
+  removeSubscribe(): void {
+    for (let i = 0; i < this.subscriptions.length - 1; i++) {
+      this.subscriptions[i].subscribe().unsubscribe()
+    }
+
+    this.subscriptions.length = 1
   }
 
   sendJoin(roomId: string, name: string): void {
@@ -131,7 +143,6 @@ export class GameService {
 
 class generateMultiplexWebSocket {
   constructor(private connection: WebSocketSubject<string>) {}
-
 
   getObservable():  Observable<string>{
     return this.connection.multiplex(

@@ -9,7 +9,6 @@ interface PlayerData {
   username: string
 }
 
-
 @Component({
   selector: 'app-invited-user',
   templateUrl: './invited-user.component.html',
@@ -25,10 +24,15 @@ export class InvitedUserComponent implements OnInit{
       this.router.navigateByUrl('/home').then()
     }
 
-    this.gameService.connect().subscribe((data:string) => {
+    this.gameService.getSubscribe().subscribe((data:string) => {
       const json = JSON.parse(data)
-      this.players = json.players
-      console.log(this.players)
+      console.log(json)
+      if (json.connection_id != undefined){
+        console.log(json.username)
+        this.players = json.players
+      } else{
+        this.router.navigateByUrl('/countdown').then()
+      }
     })
   }
 }
