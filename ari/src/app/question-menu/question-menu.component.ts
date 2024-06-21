@@ -12,12 +12,12 @@ export class QuestionMenuComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
-      this.router.navigateByUrl('/home').then()
-    }
+    // if (!this.gameService.connection) {
+    //   this.router.navigateByUrl('/home').then()
+    // }
 
-    this.gameService.connection?.subscribe((data) => {
-      console.log(data)
-    })
+    // this.gameService.connection?.subscribe((data) => {
+    //   console.log(data)
+    // })
   }
 }
