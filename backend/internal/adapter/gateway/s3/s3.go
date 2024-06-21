@@ -32,7 +32,7 @@ func (r *AWSLess) UplaodImage(ctx context.Context, filename string, image []byte
 	return nil
 }
 
-const bucketName = "ai-phone"
+const bucketName = "ai-phone-img"
 
 func (r *S3Repo) UplaodImage(ctx context.Context, filename string, image []byte) error {
 	_, err := r.client.PutObject(context.TODO(), &s3.PutObjectInput{
