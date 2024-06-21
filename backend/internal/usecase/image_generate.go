@@ -41,7 +41,7 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 		return err
 	}
 
-	images, err := i.bedrock.GenerateImageFromText(ctx, strings.Join(resultPrompt.Prompt, ","), strings.Join(resultPrompt.NegativePrompt, ","), room.ExtraPrompt)
+	images, err := i.bedrock.GenerateImageFromText(ctx, resultPrompt.Prompt, resultPrompt.NegativePrompt, room.ExtraPrompt)
 	if err != nil {
 		return err
 	}
