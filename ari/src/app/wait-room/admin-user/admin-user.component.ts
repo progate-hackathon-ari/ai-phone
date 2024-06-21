@@ -24,6 +24,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
   subscription: Subscription | undefined
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
+  roomId: string | undefined = this.gameService.roomId
 
   ngOnInit(): void {
     if (!this.gameService.connection) {
@@ -45,15 +46,21 @@ export class AdminUserComponent implements OnInit , OnDestroy{
       this.Subs.unsubscribe();
     }
   }
-  
+
   selectedOption: string = ''; // デフォルト値を設定
 
   selectOption(option: string): void {
     this.selectedOption = option;
   }
+
+  copyUrl(){
+    navigator.clipboard.writeText(`${document.location.origin}/invited-home?roomId=${this.roomId}`).then();
+  }
+
   onClickStart(){
     this.gameService.sendReady()
     this.router.navigateByUrl("/countdown").then()
   }
+
 }
 

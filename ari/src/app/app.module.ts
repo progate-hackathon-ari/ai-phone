@@ -24,6 +24,7 @@ import { InvitedHomeScreenComponent } from './home/invited-home-screen/invited-h
     InvitedUserComponent,
     CountdownComponent,
     InvitedHomeScreenComponent,
+    AdminUserComponent,
   ],
   imports: [
     BrowserModule,
