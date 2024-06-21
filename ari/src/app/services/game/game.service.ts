@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import {Subject} from "rxjs";
-import {webSocket} from "rxjs/webSocket";
+import {Injectable} from '@angular/core';
+import {webSocket, WebSocketSubject} from "rxjs/webSocket";
+import {Observable, Subject} from "rxjs";
 
 enum EventType {
   EventJoin = 'join',
@@ -21,8 +21,11 @@ type MessageTemplate = {
   providedIn: 'root'
 })
 export class GameService {
-  connection: Subject<string> | undefined
+  connection: WebSocketSubject<string> | undefined
   roomId: string | undefined
+  subscriptions: Observable<string>[] =[]
+
+  constructor(private dataSubs: dataSubscribe){}
 
   connect(){
     // TODO: envからendpointを取るようにする
@@ -32,7 +35,17 @@ export class GameService {
         deserializer: (e: MessageEvent) => e.data,
       })
     }
-    return this.connection
+    this.connection.subscribe(data => {
+      this.dataSubs.dataSubject.next(data);
+    });
+  }
+
+  removeSubscribe(): void {
+    for (let i = 0; i < this.subscriptions.length - 1; i++) {
+      this.subscriptions[i].subscribe().unsubscribe()
+    }
+
+    this.subscriptions.length = 1
   }
 
   sendJoin(roomId: string, name: string): void {
@@ -111,12 +124,22 @@ export class GameService {
 
     this.sendData(JSON.stringify(message))
   }
-
-  // backendがjsonとしてparseできるようにbase64でエンコード
   sendData(data: string): void {
     if (!this.connection) {
       throw new Error('connection is not initialized')
     }
     this.connection.next(btoa(data))
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class dataSubscribe {
+  constructor () {}
+  dataSubject = new Subject<any>();
+
+  subscribe() {
+    return this.dataSubject.asObservable();
   }
 }
