@@ -45,4 +45,9 @@ export class InvitedUserComponent implements OnInit{
       this.Subs.unsubscribe();
     }
   }
+  selectedOption: string = ''; // デフォルト値を設定
+
+  selectOption(option: string): void {
+    this.selectedOption = option;
+  }
 }
