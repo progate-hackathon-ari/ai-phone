@@ -40,15 +40,6 @@ export class GameService {
     });
   }
 
-  getSubscribe(){
-    if (!this.connection) {
-      throw new Error('connection is not initialized')
-    }
-
-    // const subscribe = new generateMultiplexWebSocket(this.connection).getObservable()
-    // this.subscriptions.push(subscribe)
-  }
-
   removeSubscribe(): void {
     for (let i = 0; i < this.subscriptions.length - 1; i++) {
       this.subscriptions[i].subscribe().unsubscribe()
@@ -133,8 +124,6 @@ export class GameService {
 
     this.sendData(JSON.stringify(message))
   }
-
-  // backendがjsonとしてparseできるようにbase64でエンコード
   sendData(data: string): void {
     if (!this.connection) {
       throw new Error('connection is not initialized')
@@ -152,18 +141,5 @@ export class dataSubscribe {
 
   subscribe() {
     return this.dataSubject.asObservable();
-  }
-}
-
-
-class generateMultiplexWebSocket {
-  constructor(private connection: WebSocketSubject<string>) {}
-
-  getObservable():  Observable<string>{
-    return this.connection.multiplex(
-      () => (""),
-      () => (""),
-      () => true
-    )
   }
 }

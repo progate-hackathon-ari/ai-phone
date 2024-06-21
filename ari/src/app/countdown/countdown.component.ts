@@ -21,19 +21,16 @@ export class CountdownComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    // this.gameService.getSubscribe().subscribe((data)=>{
-    //   let countdownData: CountdownData = JSON.parse(data);
-    //   this.countNumber = countdownData.count;
-    //   if (countdownData.is_done) {
-    //     this.router.navigateByUrl('/question').then();
-    //   }
-    // });
 
     this.dsub = this.dataSubs.subscribe();
 
     this.Subs = this.dsub?.subscribe(data => {
         const json = JSON.parse(data) as CountdownData
         console.log(json)
+        this.countNumber = json.count
+      if (json.is_done) {
+        this.router.navigateByUrl('/question').then();
+      }
     })
     this.gameService.removeSubscribe()
   }

@@ -17,7 +17,7 @@ interface PlayerData {
 })
 export class AdminUserComponent implements OnInit , OnDestroy{
   constructor(private router: Router, private gameService: GameService, private dataSubs: dataSubscribe) {
-    
+
   }
 
   players: PlayerData[] = []
@@ -30,12 +30,6 @@ export class AdminUserComponent implements OnInit , OnDestroy{
       this.router.navigateByUrl('/home').then()
     }
 
-    // this.subscription = this.gameService.getSubscribe().subscribe((data) => {
-    //     const json = JSON.parse(data)
-    //     this.players = json.players
-    //     console.log(this.players)
-    //   })
-
     this.dsub = this.dataSubs.subscribe();
 
     this.Subs = this.dsub.subscribe(data => {
@@ -43,7 +37,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
         this.players = json.players
         console.log(this.players)
     })
-    
+
   }
 
   ngOnDestroy(): void {
@@ -54,10 +48,6 @@ export class AdminUserComponent implements OnInit , OnDestroy{
 
   onClickStart() {
     this.gameService.sendReady()
-    this.router.navigateByUrl("/countdown").then(()=>{
-      setTimeout(()=>{
-        this.subscription?.unsubscribe()
-      },1000)
-    })
+    this.router.navigateByUrl("/countdown").then()
   }
 }
