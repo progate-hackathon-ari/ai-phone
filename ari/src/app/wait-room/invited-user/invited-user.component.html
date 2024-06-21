@@ -1,15 +1,76 @@
-<h2>ルームID</h2>
 <body>
     <div class="container">
-        <p class="waiting-start">startするのを待っています...</p>
-      <div class="wait-user">
-        <ul>
-          <input type="text" class="user-input" value="https//hogehoge">
-          <p class="user-title">プレイヤー一覧</p>
-          <div *ngFor="let player of players">
-            <li>{{player.username}}</li>
+        <div class="header">
+        <h1>開始されるのを待っています...</h1>
+        <div class="loading"></div>
+        </div>
+      <div class="playerandbutton">
+        <div class="wait-user">
+            <button class="invite-button">招待URL</button>
+            <ul>
+                <p class="user-title">プレイヤー一覧</p>
+                <li>user1</li>
+                <li>user2</li>
+                <li>user3</li>
+                <li>user4</li>
+                <li>user5</li>
+                <li>user6</li>
+              </ul>
           </div>
-        </ul>
+          <div class="radio-section">
+              <h2>画像のテーマ</h2>
+              <p>選択中のテーマ：{{ selectedOption }}</p>
+          <div class="radio-group">
+            <button type="button" (click)="selectOption('3d-model')" [class.selected]="selectedOption === '3d-model'">
+              <img src="assets/sample_image/3d-model.jpg" alt="Option 1" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('analog-film')" [class.selected]="selectedOption === 'analog-film'">
+              <img src="assets/sample_image/analog-film.jpg" alt="Option 2" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('anime')" [class.selected]="selectedOption === 'anime'">
+              <img src="assets/sample_image/anime.jpg" alt="Option 3" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('cinematic')" [class.selected]="selectedOption === 'cinematic'">
+              <img src="assets/sample_image/cinematic.jpg" alt="Option 4" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('comic-book')" [class.selected]="selectedOption === 'comic-book'">
+              <img src="assets/sample_image/comic-book.jpg" alt="Option 5" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('digital-art')" [class.selected]="selectedOption === 'digital-art'">
+              <img src="assets/sample_image/digital-art.jpg" alt="Option 6" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('enhance')" [class.selected]="selectedOption === 'enhance'">
+              <img src="assets/sample_image/enhance.jpg" alt="Option 7" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('fantasy-art')" [class.selected]="selectedOption === 'fantasy-art'">
+              <img src="assets/sample_image/fantasy-art.jpg" alt="Option 8" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('isometric')" [class.selected]="selectedOption === 'isometric'">
+              <img src="assets/sample_image/isometric.jpg" alt="Option 9" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('line-art')" [class.selected]="selectedOption === 'line-art'">
+              <img src="assets/sample_image/line-art.jpg" alt="Option 10" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('low-poly')" [class.selected]="selectedOption === 'low-poly'">
+              <img src="assets/sample_image/low-poly.jpg" alt="Option 11" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('modeling-compound')" [class.selected]="selectedOption === 'modeling-compound'">
+              <img src="assets/sample_image/modeling-compound.jpg" alt="Option 12" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('neon-punk')" [class.selected]="selectedOption === 'neon-punk'">
+              <img src="assets/sample_image/neon-punk.jpg" alt="Option 13" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('origami')" [class.selected]="selectedOption === 'origami'">
+              <img src="assets/sample_image/origami.jpg" alt="Option 14" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('photographic')" [class.selected]="selectedOption === 'photographic'">
+              <img src="assets/sample_image/photographic.jpg" alt="Option 15" class="radio-image">
+            </button>
+            <button type="button" (click)="selectOption('pixel-art')" [class.selected]="selectedOption === 'pixel-art'">
+              <img src="assets/sample_image/pixel-art.jpg" alt="Option 16" class="radio-image">
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

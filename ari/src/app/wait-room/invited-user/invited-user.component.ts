@@ -31,4 +31,9 @@ export class InvitedUserComponent implements OnInit{
       console.log(this.players)
     })
   }
+  selectedOption: string = ''; // デフォルト値を設定
+
+  selectOption(option: string): void {
+    this.selectedOption = option;
+  }
 }
