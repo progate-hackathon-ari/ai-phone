@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import { GameService, dataSubscribe } from '../../services/game/game.service';
@@ -15,7 +15,7 @@ interface PlayerData {
   templateUrl: './admin-user.component.html',
   styleUrl: './admin-user.component.scss'
 })
-export class AdminUserComponent implements OnInit {
+export class AdminUserComponent implements OnInit , OnDestroy{
   constructor(private router: Router, private gameService: GameService, private dataSubs: dataSubscribe) {
     
   }
@@ -44,6 +44,12 @@ export class AdminUserComponent implements OnInit {
         console.log(this.players)
     })
     
+  }
+
+  ngOnDestroy(): void {
+    if (this.Subs) {
+      this.Subs.unsubscribe();
+    }
   }
 
   onClickStart() {

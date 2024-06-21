@@ -9,7 +9,7 @@ import {NavigationService} from "./services/navigation/navigation.service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent　implements OnInit{
+export class AppComponent implements OnInit{
   title = 'ari';
 
   constructor(
@@ -30,6 +30,12 @@ export class AppComponent　implements OnInit{
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.Subs) {
+      this.Subs.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
