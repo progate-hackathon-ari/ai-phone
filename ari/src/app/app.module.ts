@@ -12,17 +12,18 @@ import { InvitedUserComponent } from './wait-room/invited-user/invited-user.comp
 import { HttpClientModule } from '@angular/common/http';
 import {GameService} from "./services/game/game.service";
 import { CountdownComponent } from './countdown/countdown.component';
+import { InvitedHomeScreenComponent } from './home/invited-home-screen/invited-home-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeScreenComponent,
-    AdminUserComponent,
     QuestionMenuComponent,
     AnswerMenuComponent,
     ResultMenuComponent,
     InvitedUserComponent,
     CountdownComponent,
+    InvitedHomeScreenComponent,
   ],
   imports: [
     BrowserModule,
