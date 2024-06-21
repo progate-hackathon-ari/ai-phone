@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import { GameService, dataSubscribe } from '../../services/game/game.service';
+import {HttpService} from "../../services/http/http.service";
 
 interface PlayerData {
   connection_id: string
@@ -16,7 +17,7 @@ interface PlayerData {
   styleUrl: './admin-user.component.scss'
 })
 export class AdminUserComponent implements OnInit , OnDestroy{
-  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe) {
+  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe,private http: HttpService) {
 
   }
 
@@ -58,6 +59,8 @@ export class AdminUserComponent implements OnInit , OnDestroy{
   }
 
   onClickStart(){
+    if (this.roomId === undefined) return
+    this.http.UpdateRoom(this.roomId, this.selectedOption)
     this.gameService.sendReady()
     this.router.navigateByUrl("/countdown").then()
   }
