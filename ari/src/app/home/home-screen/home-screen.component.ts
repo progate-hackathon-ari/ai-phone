@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
 import { HttpService } from '../../services/http/http.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home-screen',
@@ -9,35 +10,42 @@ import { HttpService } from '../../services/http/http.service';
 })
 export class HomeScreenComponent implements OnInit{
   constructor(
+    private router: Router,
     private gameService: GameService,
     private http: HttpService,
   ) {
   }
 
-  send(data: string): void {
-    this.gameService.sendData(
-      data
-    );
-  }
+  idValue: string = "";
+  nameValue: string = "";
 
   ngOnInit() {
-    console.log("home screen init");
-    this.gameService.connect().subscribe(data => {
-      console.log(data);
-    })
-    console.log("send join");
-    this.gameService.sendJoin("019034c5-2936-73c7-901c-3ee4480729c9","hoge");
-  } 
-  
-  creatAndJoinRoom() {
-    let room = this.http.CreateRoom();
-
-    room.subscribe(data => {
-      this.joinRoom(data.roomId);
-    })
+    this.gameService.connect();
   }
 
-  joinRoom(roomId: string) {
-    console.log(roomId);
+  onChangeIdInput(event: any) {
+    this.idValue = event.target.value;
+  }
+
+  onChangeNameInput(event: any) {
+    this.nameValue = event.target.value;
+  }
+
+  onClickJoinRoom() {
+    this.gameService.sendJoin(this.idValue,this.nameValue);
+    this.router.navigateByUrl("/invited").then();
+  }
+
+  onClickCreateRoom() {
+    if (this.nameValue === "") {
+      alert("Please enter your name");
+    }else{
+      let room = this.http.CreateRoom();
+
+      room.subscribe(data => {
+        this.gameService.sendJoin(data.roomId,this.nameValue);
+        this.router.navigateByUrl("/admin").then();
+      })
+    }
   }
 }

@@ -22,13 +22,16 @@ type MessageTemplate = {
 })
 export class GameService {
   connection: Subject<string> | undefined
+  roomId: string | undefined
 
   connect(){
     // TODO: envからendpointを取るようにする
-    this.connection = webSocket({
-      url: `ws://localhost:8080/game`,
-      deserializer: (e: MessageEvent) => e.data,
-    })
+    if (!this.connection) {
+      this.connection = webSocket({
+        url: `ws://localhost:8080/game`,
+        deserializer: (e: MessageEvent) => e.data,
+      })
+    }
     return this.connection
   }
 
@@ -44,48 +47,65 @@ export class GameService {
     }
 
     this.sendData(JSON.stringify(message))
+    this.roomId = roomId
   }
 
-  sendAnswer(roomId: string, answer: string): void {
+  sendAnswer(answer: string): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let data = JSON.stringify({
       answer: answer,
     })
 
     let message: MessageTemplate = {
       event: EventType.EventAnswer,
-      roomId: roomId,
+      roomId: this.roomId,
       data: btoa(data),
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendReady(roomId: string): void {
+  sendReady(): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let message: MessageTemplate = {
       event: EventType.EventReady,
-      roomId: roomId,
+      roomId: this.roomId,
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendNext(roomId: string): void {
+  sendNext(): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let message: MessageTemplate = {
       event: EventType.EventNext,
-      roomId: roomId,
+      roomId: this.roomId,
     }
 
     this.sendData(JSON.stringify(message))
   }
 
-  sendCountDown(roomId: string, count: number): void {
+  sendCountDown(count: number): void {
+    if (!this.roomId) {
+      throw new Error('roomId is not initialized')
+    }
+
     let data = JSON.stringify({
       count: count,
     })
 
     let message: MessageTemplate = {
       event: EventType.EventCountDown,
-      roomId: roomId,
+      roomId: this.roomId,
       data: btoa(data),
     }
 
