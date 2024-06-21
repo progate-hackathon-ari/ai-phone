@@ -35,7 +35,7 @@ func (i *GameInteractor) CountDown(ctx context.Context, count int) error {
 }
 
 type Dummy struct {
-	D string `json:"d"`
+	State NextState `json:"state"`
 }
 
 const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
@@ -43,6 +43,7 @@ const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
 type NextState string
 
 const (
+	StateStartGame NextState = "start_game"
 	StateNextRound NextState = "next_round"
 	StateGameEnd   NextState = "game_end"
 )
@@ -114,7 +115,7 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			return err
 		}
 
-		if err := dunnyBloadCast(roomID); err != nil {
+		if err := dunnyBloadCast(roomID, StateGameEnd); err != nil {
 			return err
 		}
 
@@ -133,7 +134,7 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		return err
 	}
 
-	if err := dunnyBloadCast(roomID); err != nil {
+	if err := dunnyBloadCast(roomID, StateNextRound); err != nil {
 		return err
 	}
 
@@ -173,9 +174,9 @@ func sendImage(roomID, connectionID string, imageURI string) error {
 	return SendMessageByID(roomID, connectionID, data)
 }
 
-func dunnyBloadCast(roomID string) error {
+func dunnyBloadCast(roomID string, state NextState) error {
 	data, err := json.Marshal(&Dummy{
-		D: ":)",
+		State: state,
 	})
 	if err != nil {
 		return err
