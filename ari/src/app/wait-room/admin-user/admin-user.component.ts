@@ -31,13 +31,15 @@ export class AdminUserComponent implements OnInit{
       console.log(this.players)
     })
   }
-  selectedOption: string = 'option1'; // デフォルト値を設定
+  selectedOption: string = ''; // デフォルト値を設定
 
   selectOption(option: string): void {
     this.selectedOption = option;
+  }
   onClickStart(){
     this.gameService.sendReady()
     this.router.navigateByUrl("/question").then()
 
   }
 }
+
