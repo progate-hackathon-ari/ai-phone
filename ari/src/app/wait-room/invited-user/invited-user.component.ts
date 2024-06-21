@@ -50,5 +50,4 @@ export class InvitedUserComponent implements OnInit{
   selectOption(option: string): void {
     this.selectedOption = option;
   }
-
 }
