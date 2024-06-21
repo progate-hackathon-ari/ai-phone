@@ -38,7 +38,7 @@ type Dummy struct {
 	State NextState `json:"state"`
 }
 
-const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
+const baseS3URL = "https://ai-phone-img.s3.amazonaws.com"
 
 type NextState string
 
@@ -143,15 +143,13 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		playersMap[int(player.Index)] = player
 	}
 
-	numberOfPlayer := len(players)
 	for _, player := range players {
-		if numberOfPlayer == int(player.Index) {
-			if err := sendImage(roomID, playersMap[int(room.CurrentGame)].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
-				return err
-			}
+		pindex := int(player.Index+room.CurrentGame) - 1
+		if pindex > len(players) {
+			pindex = pindex - len(players)
 		}
 
-		if err := sendImage(roomID, playersMap[int(room.CurrentGame+player.Index)-1].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
+		if err := sendImage(roomID, player.ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, playersMap[pindex].ConnectionID, room.CurrentGame-1)); err != nil {
 			return err
 		}
 	}
