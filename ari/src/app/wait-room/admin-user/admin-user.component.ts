@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GameService} from "../../services/game/game.service";
+import {Observable, Subscription} from "rxjs";
+import { GameService, dataSubscribe } from '../../services/game/game.service';
 
 interface PlayerData {
   connection_id: string
@@ -14,25 +15,39 @@ interface PlayerData {
   templateUrl: './admin-user.component.html',
   styleUrl: './admin-user.component.scss'
 })
-export class AdminUserComponent implements OnInit{
-  constructor(private router:Router,private gameService: GameService) {
+export class AdminUserComponent implements OnInit , OnDestroy{
+  constructor(private router: Router, private gameService: GameService, private dataSubs: dataSubscribe) {
+
   }
 
   players: PlayerData[] = []
+  subscription: Subscription | undefined
+  dsub: Observable<any> | undefined;
+  Subs: Subscription | undefined;
 
   ngOnInit(): void {
     if (!this.gameService.connection) {
       this.router.navigateByUrl('/home').then()
     }
 
-    this.gameService.connect().subscribe((data)=>{
-      const json = JSON.parse(data)
-      this.players = json.players
-      console.log(this.players)
+    this.dsub = this.dataSubs.subscribe();
+
+    this.Subs = this.dsub.subscribe(data => {
+        const json = JSON.parse(data)
+        this.players = json.players
+        console.log(this.players)
     })
+
   }
-  onClickStart(){
+
+  ngOnDestroy(): void {
+    if (this.Subs) {
+      this.Subs.unsubscribe();
+    }
+  }
+
+  onClickStart() {
     this.gameService.sendReady()
-    this.router.navigateByUrl("/question").then()
+    this.router.navigateByUrl("/countdown").then()
   }
 }
