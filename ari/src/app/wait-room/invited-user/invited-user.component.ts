@@ -24,15 +24,15 @@ export class InvitedUserComponent implements OnInit{
       this.router.navigateByUrl('/home').then()
     }
 
-    this.gameService.getSubscribe().subscribe((data:string) => {
-      const json = JSON.parse(data)
-      console.log(json)
-      if (json.connection_id != undefined){
-        console.log(json.username)
-        this.players = json.players
-      } else{
-        this.router.navigateByUrl('/countdown').then()
-      }
-    })
+    // this.gameService.getSubscribe().subscribe((data:string) => {
+    //   const json = JSON.parse(data)
+    //   console.log(json)
+    //   if (json.connection_id != undefined){
+    //     console.log(json.username)
+    //     this.players = json.players
+    //   } else{
+    //     this.router.navigateByUrl('/countdown').then()
+    //   }
+    // })
   }
 }

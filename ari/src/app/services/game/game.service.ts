@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {webSocket, WebSocketSubject} from "rxjs/webSocket";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 enum EventType {
   EventJoin = 'join',
@@ -25,7 +25,9 @@ export class GameService {
   roomId: string | undefined
   subscriptions: Observable<string>[] =[]
 
-  connect(): WebSocketSubject<string>{
+  constructor(private dataSubs: dataSubscribe){}
+
+  connect(){
     // TODO: envからendpointを取るようにする
     if (!this.connection) {
       this.connection = webSocket({
@@ -33,18 +35,18 @@ export class GameService {
         deserializer: (e: MessageEvent) => e.data,
       })
     }
-    return this.connection
+    this.connection.subscribe(data => {
+      this.dataSubs.dataSubject.next(data);
+    });
   }
 
-  getSubscribe(): Observable<string>{
+  getSubscribe(){
     if (!this.connection) {
       throw new Error('connection is not initialized')
     }
 
-    const subscribe = new generateMultiplexWebSocket(this.connection).getObservable()
-    this.subscriptions.push(subscribe)
-
-    return subscribe
+    // const subscribe = new generateMultiplexWebSocket(this.connection).getObservable()
+    // this.subscriptions.push(subscribe)
   }
 
   removeSubscribe(): void {
@@ -140,6 +142,19 @@ export class GameService {
     this.connection.next(btoa(data))
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class dataSubscribe {
+  constructor () {}
+  dataSubject = new Subject<any>();
+
+  subscribe() {
+    return this.dataSubject.asObservable();
+  }
+}
+
 
 class generateMultiplexWebSocket {
   constructor(private connection: WebSocketSubject<string>) {}
