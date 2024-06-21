@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/progate-hackathon-ari/backend/cmd/config"
 )
 
 type S3 interface {
@@ -32,11 +33,9 @@ func (r *AWSLess) UplaodImage(ctx context.Context, filename string, image []byte
 	return nil
 }
 
-const bucketName = "ai-phone-img"
-
 func (r *S3Repo) UplaodImage(ctx context.Context, filename string, image []byte) error {
 	_, err := r.client.PutObject(context.TODO(), &s3.PutObjectInput{
-		Bucket: aws.String(bucketName),
+		Bucket: aws.String(config.Config.Aws.S3BucketName),
 		Key:    aws.String(filename),
 		Body:   bytes.NewReader(image),
 	})
