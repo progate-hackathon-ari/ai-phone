@@ -15,20 +15,10 @@ export class HomeScreenComponent{
     private http: HttpService,
   ) {
   }
-
-  idValue: string = "";
   nameValue: string = "";
-  onChangeIdInput(event: any) {
-    this.idValue = event.target.value;
-  }
 
   onChangeNameInput(event: any) {
     this.nameValue = event.target.value;
-  }
-
-  onClickJoinRoom() {
-    this.gameService.sendJoin(this.idValue,this.nameValue);
-    this.router.navigateByUrl("/invited").then();
   }
 
   onClickCreateRoom() {

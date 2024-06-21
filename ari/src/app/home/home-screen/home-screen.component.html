@@ -2,8 +2,8 @@
 <body>
 <div class="container">
     <h1 class="logo">AI-PHONE</h1>
-    <input type="text" class="name-input" placeholder="名前を入力">
+    <input type="text" class="name-input" placeholder="名前を入力" (keyup)="onChangeNameInput($event)">
         <!-- routerLinは仮置き -->
-    <button class="create-button" routerLink="/admin">ルーム作成</button>
+    <button class="create-button" (click)="onClickCreateRoom()">ルーム作成</button>
 </div>
 </body>
