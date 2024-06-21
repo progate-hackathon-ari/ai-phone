@@ -45,9 +45,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
       this.Subs.unsubscribe();
     }
   }
-
-  onClickStart() {
-  }
+  
   selectedOption: string = ''; // デフォルト値を設定
 
   selectOption(option: string): void {
