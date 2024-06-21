@@ -25,15 +25,16 @@ export class AdminUserComponent implements OnInit{
       this.router.navigateByUrl('/home').then()
     }
 
-    this.gameService.connect().subscribe((data)=>{
+    this.gameService.subscribe((data)=>{
       const json = JSON.parse(data)
       this.players = json.players
       console.log(this.players)
     })
   }
+
   onClickStart(){
     this.gameService.sendReady()
-    this.gameService.connect().unsubscribe()
+    this.gameService.unsubscribe()
     this.router.navigateByUrl("/countdown").then()
   }
 }

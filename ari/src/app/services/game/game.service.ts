@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {webSocket} from "rxjs/webSocket";
 
 enum EventType {
@@ -23,6 +23,7 @@ type MessageTemplate = {
 export class GameService {
   connection: Subject<string> | undefined
   roomId: string | undefined
+  private subscription: Subscription | undefined
 
   connect(){
     // TODO: envからendpointを取るようにする
@@ -34,6 +35,20 @@ export class GameService {
     }
     return this.connection
   }
+
+  subscribe(callback: (data: string) => void) {
+    if (this.connection && !this.subscription) {
+      this.subscription = this.connection.subscribe(callback);
+    }
+  }
+
+  unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = undefined;
+    }
+  }
+
 
   sendJoin(roomId: string, name: string): void {
     let data = JSON.stringify({

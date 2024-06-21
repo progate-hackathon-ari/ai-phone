@@ -18,11 +18,11 @@ export class CountdownComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.gameService.connect().subscribe((data: any) => {
-      const json:CountdownData = JSON.parse(data)
-      this.countNumber = json.count
-      if (json.is_done) {
-        this.router.navigateByUrl('/question')
+    this.gameService.subscribe((data)=>{
+      let countdownData: CountdownData = JSON.parse(data)
+      this.countNumber = countdownData.count
+      if (countdownData.is_done) {
+        this.router.navigateByUrl('/question').then()
       }
     })
   }
