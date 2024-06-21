@@ -23,3 +23,19 @@ func NewBedRock(config aws.Config) *BedrockService {
 		brc: bedrockruntime.NewFromConfig(config),
 	}
 }
+
+type AILessService struct {
+}
+
+func NewAILessBedRock() *AILessService {
+	return &AILessService{}
+}
+
+func (r *AILessService) GenerateImageFromText(ctx context.Context, prompt, negativePrompt, style string) ([][]byte, error) {
+	return nil, nil
+}
+
+// Cloude
+func (r *AILessService) BuildPrompt(ctx context.Context, prompt string) (*Prompts, error) {
+	return nil, nil
+}

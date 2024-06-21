@@ -42,6 +42,27 @@ func NewContainer() error {
 	return nil
 }
 
+func NewAILessContainer() error {
+	container = dig.New()
+
+	args := []provideArg{
+		{constructor: db.Connect, opts: []dig.ProvideOption{}},
+		{constructor: db.NewGORM, opts: []dig.ProvideOption{}},
+		{constructor: gorm.NewGormDB, opts: []dig.ProvideOption{dig.As(new(repository.DataAccess))}},
+		{constructor: s3.NewAWSLess, opts: []dig.ProvideOption{dig.As(new(s3.S3))}},
+		{constructor: bedrock.NewAILessBedRock, opts: []dig.ProvideOption{dig.As(new(bedrock.Bedrock))}},
+		{constructor: usecase.NewRoomInteractor, opts: []dig.ProvideOption{}},
+	}
+
+	for _, arg := range args {
+		if err := container.Provide(arg.constructor, arg.opts...); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func Invoke[T any]() T {
 	var r T
 	if err := container.Invoke(func(t T) error {

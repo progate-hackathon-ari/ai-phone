@@ -22,6 +22,16 @@ func NewS3Repo(config aws.Config) *S3Repo {
 	}
 }
 
+type AWSLess struct{}
+
+func NewAWSLess() *AWSLess {
+	return &AWSLess{}
+}
+
+func (r *AWSLess) UplaodImage(ctx context.Context, filename string, image []byte) error {
+	return nil
+}
+
 const bucketName = "ai-phone"
 
 func (r *S3Repo) UplaodImage(ctx context.Context, filename string, image []byte) error {
