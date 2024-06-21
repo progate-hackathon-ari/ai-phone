@@ -45,9 +45,15 @@ export class AdminUserComponent implements OnInit , OnDestroy{
       this.Subs.unsubscribe();
     }
   }
+  
+  selectedOption: string = ''; // デフォルト値を設定
 
-  onClickStart() {
+  selectOption(option: string): void {
+    this.selectedOption = option;
+  }
+  onClickStart(){
     this.gameService.sendReady()
     this.router.navigateByUrl("/countdown").then()
   }
 }
+
