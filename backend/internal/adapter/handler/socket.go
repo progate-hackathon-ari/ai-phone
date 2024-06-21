@@ -78,7 +78,6 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 			message, err := unmarshal[RequestMessage](string(msg))
 			if err != nil {
 				log.Error(ctx, "failed to unmarshal or decode message", "error", err)
-				return err
 			}
 
 			switch message.Event {

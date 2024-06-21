@@ -1,10 +1,10 @@
 <div class="container">
     <h1 class="logo">AI-PHONE</h1>
-    <input type="text" class="name-input" placeholder="名前を入力">
+    <input type="text" class="name-input" placeholder="名前を入力" (keyup)="onChangeNameInput($event)">
     <div class="button-container">
         <!-- routerLinは仮置き -->
-        <button class="create-button" routerLink="/admin">ルーム作成</button>
-        <input type="text" placeholder="URLを入力" class="url-input">
-        <button class="enter-button" routerLink="/invited">ルームに入る</button>
+        <button class="create-button" routerLink="/admin" (click)="onClickCreateRoom()">ルーム作成</button>
+        <input type="text" placeholder="URLを入力" class="url-input" (keyup)="onChangeIdInput($event)" >
+        <button class="enter-button" routerLink="/invited" (click)="onClickJoinRoom()">ルームに入る</button>
     </div>
 </div>
