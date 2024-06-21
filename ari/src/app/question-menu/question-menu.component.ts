@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GameService} from "../services/game/game.service";
+import {dataSubscribe, GameService} from "../services/game/game.service";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-question-menu',
@@ -8,16 +9,30 @@ import {GameService} from "../services/game/game.service";
   styleUrl: './question-menu.component.scss'
 })
 export class QuestionMenuComponent implements OnInit{
-  constructor(private router:Router,private gameService: GameService) {
+  constructor(private router:Router,private gameService: GameService, private dataSubs: dataSubscribe ) {
   }
+  questionValue: string = "";
+  dsub: Observable<any> | undefined;
+  Subs: Subscription | undefined;
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
-      this.router.navigateByUrl('/home').then()
-    }
+      this.dsub = this.dataSubs.subscribe();
 
-    this.gameService.connection?.subscribe((data) => {
-      console.log(data)
-    })
+      this.Subs = this.dsub?.subscribe(data => {
+          const json = JSON.parse(data)
+          if (this.gameService.isAdmin && json.type === "true") {
+              this.router.navigateByUrl('/answer').then()
+          } else if (!this.gameService.isAdmin && json.type === "false") {
+                this.router.navigateByUrl('/result').then()
+          }
+      })
+  }
+
+  onChangeQuestionInput(event: any) {
+    this.questionValue = event.target.value;
+  }
+
+  onSendButton(){
+    this.gameService.sendAnswer(this.questionValue);
   }
 }

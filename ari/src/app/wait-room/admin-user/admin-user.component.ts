@@ -53,6 +53,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
   }
   onClickStart(){
     this.gameService.sendReady()
+    this.gameService.isAdmin = true
     this.router.navigateByUrl("/countdown").then()
   }
 }

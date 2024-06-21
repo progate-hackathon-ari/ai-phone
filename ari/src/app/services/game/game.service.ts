@@ -24,6 +24,7 @@ export class GameService {
   connection: WebSocketSubject<string> | undefined
   roomId: string | undefined
   subscriptions: Observable<string>[] =[]
+  isAdmin: boolean = false
 
   constructor(private dataSubs: dataSubscribe){}
 

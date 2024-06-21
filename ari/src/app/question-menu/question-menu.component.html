@@ -1,8 +1,8 @@
 <div class="container">
   <h1>00:30</h1>
   <div>
-    <input type="text" placeholder="お題を入力してください！..."/>
-    <button class="button" routerLink="/admin">提出！</button>
+    <input type="text" placeholder="お題を入力してください！..." (keyup)="onChangeQuestionInput($event)"/>
+    <button class="button" routerLink="/admin" (click)="onSendButton()">提出！</button>
   </div>
 </div>
 
