@@ -6,51 +6,45 @@ $input-padding: 0.5rem;
 $box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 $transition-duration: 0.5s;
 
+
+
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-h2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  height: 700px;
-  border-radius: 30px;
-  border: 12px solid #5895f6;
-  background-color: #fff; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.start-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // width: 100%;
+    // max-width: 1200px;
+  }
+  
+  .start-button {
     text-decoration: none;
-    margin-bottom: 100px;
-    width: 320px;
-    padding: 1rem 4rem;
+    width: 220px;
+    padding: 1rem;
+    // padding: 1rem 4rem;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 2.5rem;
     color: $primary-color;
-    border-bottom: 2px solid $primary-color;
+    border: 2px solid $primary-color;
     border-radius: 100vh;
+
     box-shadow: $box-shadow;
     -webkit-box-shadow: $box-shadow;
     transition: $transition-duration;
     background: none;
-    border: none;
     cursor: pointer;
     display: inline-block;
     text-align: center;
+    margin-right: 50px;
   
     &:hover {
       color: #fff;
@@ -63,81 +57,109 @@ h2 {
       outline: none;
     }
   }
+  
+  .playerandbutton {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .wait-user {
+    flex: 1;
+    width: auto;
+    margin-top: 50px;
+    // margin-right: 20px;
+    position: relative; /* 相対位置を設定 */
+    // padding-bottom: 20px; /* ボタンのためのスペースを確保 */
+  }
+  .invite-button {
+    // position: absolute;
+    bottom: 10px; /* 下端からの距離 */
+    // right: 10px; /* 右端からの距離 */
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: $transition-duration;
 
-.wait-user {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 300px; // 要素間のスペース
-
-  ul {
+    &:hover {
+        color: $primary-color;
+        background: white;
+        border-bottom: 2px solid #fff;
+        transform: translateY(3px);
+      }
+  }
+  .wait-user ul {
     list-style-type: none;
-    padding: 30px;
+    padding: 0;
     margin: 0;
     display: flex;
-    border-radius: 20px;
-    border: 2px solid #000000;
     flex-direction: column;
-    max-height: 300px; // スクロールバーが表示される高さ
+    max-height: 500px; // スクロールバーが表示される高さ
     overflow-y: auto;
     gap: 20px; 
-    width: 100%; 
+    width: 450px; 
   }
-
-  li {
+  
+  .user-title {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .wait-user li {
     padding: 0.5rem;
-    border: 3px solid #000000;
+    border: 2px solid #000000;
     border-radius: 10px;
     font-weight: bold;
     font-size: 1.5rem;
-    width: 400px; 
-    box-sizing: border-box; 
+    width: 400px;
+    box-sizing: border-box;
+    background-color: #ffffff; /* 背景色を追加 */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1), -3px -3px 6px rgba(255, 255, 255, 0.7); /* 立体的なボックスシャドウ */
   }
-
-  .user-title {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
+  
+  .radio-section {
+    flex: 1.5;
+    margin-left: 80px;
   }
-
-  .fixed-value {
+  
+  .radio-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .radio-section p{
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .radio-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .radio-group button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  
-    p {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-    }
-  
-    .textarea-container {
-      position: relative;
-      width: 300px; // 必要に応じて調整
-    }
-  
-    .fixed-input {
-      width: 100%; // 親要素に合わせて幅を設定
-      height: 100px; // 必要に応じて調整
-      padding: 0.5rem;
-      border: 3px solid #000000;
-      border-radius: 4px;
-      font-size: 1rem;
-      resize: none;
-      box-sizing: border-box; // パディングとボーダーを含めて幅を計算
-    }
-  
-    .save-button {
-      position: absolute;
-      bottom: -35px; // textareaの外に配置
-      right: 0;
-      padding: 0.5rem 1rem;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+    justify-content: center;
+    align-items: center;
   }
   
-}
+  .radio-group .radio-image {
+    width: 120px;
+    height: 120px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+  }
+  
+  .radio-group .selected .radio-image {
+    border-color: $primary-color;
+  }
+  
