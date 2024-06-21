@@ -133,8 +133,6 @@ I want to reproduce {{text}} in Stable diffusion by generating prompts and negat
 			continue
 		}
 
-		fmt.Println(matches[0][0])
-
 		var prompts Prompts
 		err = json.Unmarshal([]byte(matches[0][0]), &prompts)
 		if err == nil {
