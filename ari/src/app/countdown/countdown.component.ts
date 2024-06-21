@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GameService} from "../services/game/game.service";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 interface CountdownData {
   is_done: boolean
@@ -16,16 +17,17 @@ export class CountdownComponent implements OnInit{
   countNumber: number | undefined
   constructor(private router: Router, private gameService: GameService) {
   }
+  subscribe: Subscription | undefined
 
   ngOnInit(): void {
-    this.gameService.subscribe((data)=>{
-      let countdownData: CountdownData = JSON.parse(data)
-      this.countNumber = countdownData.count
+    this.subscribe = this.gameService.getSubscribe().subscribe((data)=>{
+      let countdownData: CountdownData = JSON.parse(data);
+      this.countNumber = countdownData.count;
       if (countdownData.is_done) {
-        this.router.navigateByUrl('/question').then()
+        this.router.navigateByUrl('/question').then(()=>{
+          this.subscribe?.unsubscribe()
+        });
       }
-    })
+    });
   }
-
-
 }

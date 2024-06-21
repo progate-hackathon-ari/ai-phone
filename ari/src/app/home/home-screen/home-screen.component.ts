@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
 import { HttpService } from '../../services/http/http.service';
 import {Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   templateUrl: './home-screen.component.html',
   styleUrl: './home-screen.component.scss'
 })
-export class HomeScreenComponent implements OnInit{
+export class HomeScreenComponent{
   constructor(
     private router: Router,
     private gameService: GameService,
@@ -18,11 +18,6 @@ export class HomeScreenComponent implements OnInit{
 
   idValue: string = "";
   nameValue: string = "";
-
-  ngOnInit() {
-    this.gameService.connect();
-  }
-
   onChangeIdInput(event: any) {
     this.idValue = event.target.value;
   }
