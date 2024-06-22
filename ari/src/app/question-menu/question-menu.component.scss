@@ -10,73 +10,72 @@ $transition-duration: 0.5s;
 
 
 h1{
-    display: flex;
-    justify-content: right;
-    margin-right: 40px;
-    font-size: 60px;
-    // left: 10px;
-    // margin-left: 900px;
+  display: flex;
+  justify-content: right;
+  margin-right: 40px;
+  font-size: 60px;
+  // left: 10px;
+  // margin-left: 900px;
 }
 
 body {
-    margin: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background-color: #f4f4f4;
-  }
+  margin: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #f4f4f4;
+}
 
-  .container {
-    height: 55vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.container {
+  height: 55vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.container p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 60px;
+}
+
+.input-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-zone input {
+  padding: 10px;
+  width: 600px;
+  height: 40px;
+  font-size: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.input-zone .button {
+  padding: 10px 20px;
+  height: 60px;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  background-color: $primary-color;
+  box-shadow: $box-shadow;
+  -webkit-box-shadow: $box-shadow;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: $transition-duration;
+  &:hover {
+    color: $primary-color;
+    background: white;
+    border-bottom: 2px solid #fff;
+    transform: translateY(3px);
   }
-  
-  .container p {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 60px;
-  }
-  
-  .input-zone {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .input-zone input {
-    padding: 10px;
-    width: 600px;
-    height: 40px;
-    font-size: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .input-zone .button {
-    padding: 10px 20px;
-    height: 60px;
-    padding: 10px 20px;
-    font-size: 1.5rem;
-    background-color: $primary-color;
-    box-shadow: $box-shadow;
-    -webkit-box-shadow: $box-shadow;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: $transition-duration;
-    &:hover {
-        color: $primary-color;
-        background: white;
-        border-bottom: 2px solid #fff;
-        transform: translateY(3px);
-      }
-  }
-  
+}

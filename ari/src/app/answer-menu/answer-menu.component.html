@@ -2,8 +2,8 @@
 <div class="container">
   <p>画像から想像する文章を書こう！</p>
   <img [src]="imageUri">
-  <div>
-    <input type="text" placeholder="お題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
+  <div class="input-zone">
+    <input type="text" placeholder="思いついたお題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
     <button class="button" (click)="onClickSubmit()">提出！</button>
   </div>
 </div>
