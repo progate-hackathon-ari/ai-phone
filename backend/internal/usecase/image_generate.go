@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/progate-hackathon-ari/backend/internal/entities/model"
@@ -24,7 +23,7 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 	if err != nil {
 		return err
 	}
-	log.Println("img gen 1")
+
 	if err := i.repo.CreateIngamePrompt(ctx, &model.InGamePrompt{
 		RoomID:       roomID,
 		ConnectionID: i.client.info.ConnectionID,
@@ -34,7 +33,6 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 		return err
 	}
 
-	log.Println("img gen 2")
 	resultPrompt, err := i.bedrock.BuildPrompt(ctx, strings.Join([]string{
 		prompt,
 		// 暗黙的な内部の追加プロンプトはここに書く
@@ -43,13 +41,11 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 		return err
 	}
 
-	log.Println("img gen 3")
 	images, err := i.bedrock.GenerateImageFromText(ctx, resultPrompt.Prompt, resultPrompt.NegativePrompt, room.ExtraPrompt)
 	if err != nil {
 		return err
 	}
 
-	log.Println("img gen 4")
 	if err := i.s3.UplaodImage(ctx, fmt.Sprintf("%s/%s/%d.jpg", roomID, i.client.info.ConnectionID, room.CurrentGame), images[0]); err != nil {
 		return err
 	}
@@ -63,6 +59,5 @@ func (i *GameInteractor) ImageGenerate(ctx context.Context, roomID, prompt strin
 		return err
 	}
 
-	log.Println("img gen 5")
 	return BroadcastInRoom(roomID, data)
 }

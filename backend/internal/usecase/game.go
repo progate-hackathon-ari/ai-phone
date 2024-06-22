@@ -89,13 +89,19 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		if err != nil {
 			return err
 		}
-
+		perGame := make(map[string][]model.InGamePrompt, room.GameSize)
 		promptMap := make(map[string]map[int]string, room.GameSize)
 
 		for _, prompt := range prompts {
-			promptMap[prompt.ConnectionID] = make(map[int]string, room.GameSize)
-			for i := 0; i < int(room.GameSize); i++ {
-				promptMap[prompt.ConnectionID][i] = prompt.Prompt
+			log.Println(prompt.Prompt, prompt.GameIndex)
+			perGame[prompt.ConnectionID] = append(perGame[prompt.ConnectionID], prompt)
+		}
+
+		for _, player := range players {
+			v := perGame[player.ConnectionID]
+			promptMap[player.ConnectionID] = make(map[int]string, room.GameSize)
+			for _, prompt := range v {
+				promptMap[player.ConnectionID][int(prompt.GameIndex)-1] = prompt.Prompt
 			}
 		}
 
@@ -115,11 +121,12 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 				}
 			}
 
+			log.Println(promptMap[player.ConnectionID], promptMap[player.ConnectionID][0], promptMap[player.ConnectionID][int(room.GameSize)-1])
+
 			score, err := i.bedrock.ComparePrompt(ctx, promptMap[player.ConnectionID][0], promptMap[player.ConnectionID][int(room.GameSize)-1])
 			if err != nil {
 				return err
 			}
-			log.Println(score)
 			result.Score = score
 
 			resultMap.Result[player.ConnectionID] = result
