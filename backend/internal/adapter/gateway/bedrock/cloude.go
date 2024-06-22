@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"regexp"
 	"strings"
 
@@ -144,34 +145,91 @@ I want to reproduce {{text}} in Stable diffusion by generating prompts and negat
 	return nil, fmt.Errorf("failed to build prompt")
 }
 
-type MatchRate struct {
-	MatchRate float64 `json:"match_rate"`
+// {
+//   "response_type": "embeddings_floats",
+//   "id": "string",
+//   "embeddings": [
+//     [
+//       0
+//     ]
+//   ],
+//   "texts": [
+//     "string"
+//   ],
+//   "meta": {
+//     "api_version": {
+//       "version": "string",
+//       "is_deprecated": true,
+//       "is_experimental": true
+//     },
+//     "billed_units": {
+//       "input_tokens": 0,
+//       "output_tokens": 0,
+//       "search_units": 0,
+//       "classifications": 0
+//     },
+//     "tokens": {
+//       "input_tokens": 0,
+//       "output_tokens": 0
+//     },
+//     "warnings": [
+//       "string"
+//     ]
+//   }
+// }
+
+type EmbeddingResponse struct {
+	ResponseType string      `json:"response_type"`
+	ID           string      `json:"id"`
+	Embeddings   [][]float64 `json:"embeddings"`
+	Texts        []string    `json:"texts"`
+}
+
+type SearchRequest struct {
+	Texts     []string `json:"texts"`
+	InputType string   `json:"input_type"`
 }
 
 func (s *BedrockService) ComparePrompt(ctx context.Context, first, last string) (int, error) {
-	for range DefaultRetry {
-		prompt, err := s.requestPrompt(ctx, fmt.Sprintf(`<1st>%s</1st>
-<last> %s</last>
-Please compare the strings {{1st}} and {{last}} and tell me the match rate based on the meaning using json only output.
-`, first, last))
-		if err != nil {
-			return -1, err
-		}
-
-		reg := regexp.MustCompile(`{[^{}]*}`)
-		matches := reg.FindAllStringSubmatch(prompt, -1)
-
-		if len(matches) == 0 {
-			continue
-		}
-
-		var matchRate MatchRate
-		err = json.Unmarshal([]byte(matches[0][0]), &matchRate)
-		if err == nil {
-			return int(matchRate.MatchRate * 100), nil
-		}
-
-		log.Println(err)
+	data, err := json.Marshal(SearchRequest{
+		Texts:     []string{first, last},
+		InputType: "search_query",
+	})
+	if err != nil {
+		return 0, err
 	}
-	return -1, fmt.Errorf("failed to build prompt")
+
+	res, err := s.brc.InvokeModel(ctx, &bedrockruntime.InvokeModelInput{
+		ModelId:     aws.String("cohere.embed-multilingual-v3"),
+		ContentType: aws.String("application/json"),
+		Body:        data,
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	var resp EmbeddingResponse
+	err = json.Unmarshal(res.Body, &resp)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(resp.Embeddings) != 2 {
+		return 0, fmt.Errorf("invalid response")
+	}
+	return int(compute(resp.Embeddings[0], resp.Embeddings[1]) * 100), nil
+}
+
+func compute(x, y []float64) float64 {
+	var sum, s1, s2 float64
+	for i := 0; i < len(x); i++ {
+		sum += x[i] * y[i]
+		s1 += math.Pow(x[i], 2)
+		s2 += math.Pow(y[i], 2)
+	}
+	if s1 == 0 || s2 == 0 {
+		return 0.0
+	}
+	return sum / (math.Sqrt(s1) * math.Sqrt(s2))
 }

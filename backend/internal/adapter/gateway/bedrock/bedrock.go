@@ -48,3 +48,7 @@ func (r *AILessService) BuildPrompt(ctx context.Context, prompt string) (*Prompt
 		NegativePrompt: prompt,
 	}, nil
 }
+
+func (r *AILessService) ComparePrompt(ctx context.Context, first, last string) (int, error) {
+	return 0, nil
+}

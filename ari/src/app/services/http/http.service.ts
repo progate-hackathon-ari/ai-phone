@@ -23,7 +23,7 @@ export type UpdateRoomResponse = {
   providedIn: 'root'
 })
 export class HttpService {
-  private apiURI = "http://ai-phone-alb-345985775.us-east-1.elb.amazonaws.com";
+  private apiURI = "http://localhost:8080";
   constructor(private http: HttpClient) {}
 
   CreateRoom(): Observable<CreateRoomResponse>{
