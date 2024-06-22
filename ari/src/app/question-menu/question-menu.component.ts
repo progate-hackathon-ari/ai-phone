@@ -13,7 +13,6 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   }
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
-  isButtonVisible = true;
   isButtonEnabled = true;
   countDown = "30";
 
@@ -31,7 +30,7 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
 
         if (json.is_done != undefined) {
           this.countDown = ( '000' + json.count ).slice( -2 );
-          if (json.is_done && this.isButtonVisible){
+          if (json.is_done && this.isButtonEnabled){
             this.onClickSubmit()
           }
         }
@@ -68,7 +67,6 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
     if (this.question === ''){
       this.question = 'No answer'
     }
-    this.isButtonVisible = false;
     this.isButtonEnabled = false;
     this.gameService.sendAnswer(this.question)
   }
