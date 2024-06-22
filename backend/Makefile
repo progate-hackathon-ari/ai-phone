@@ -14,12 +14,12 @@ gen-model: migrate-up
 	go run gorm.io/gen/tools/gentool@latest -c ./gen.tool.yaml
 
 
-build-create-room:
-	docker build -t ai_phone_create_room:latest -f .docker/create_room/Dockerfile .
-	docker tag ai_phone_create_room:latest 211125717884.dkr.ecr.ap-northeast-1.amazonaws.com/ai-phone:create-room-latest
+build-app:
+	docker build -t ai-phone -f .docker/app/Dockerfile .
+	docker tag ai-phone:latest 830373977162.dkr.ecr.us-east-1.amazonaws.com/ai-phone:latest
 
 run-create-room: build-create-room
 	docker run -p 8080:8080 --network=ai-phone 211125717884.dkr.ecr.ap-northeast-1.amazonaws.com/ai-phone:create-room-latest
 
-push-create-room: build-create-room
-	docker push 211125717884.dkr.ecr.ap-northeast-1.amazonaws.com/ai-phone:create-room-latest
+push-app: build-app
+	docker push 830373977162.dkr.ecr.us-east-1.amazonaws.com/ai-phone:latest

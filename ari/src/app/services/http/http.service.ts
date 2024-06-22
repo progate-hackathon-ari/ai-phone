@@ -23,7 +23,7 @@ export type UpdateRoomResponse = {
   providedIn: 'root'
 })
 export class HttpService {
-  private apiURI = environment.BackendURI;
+  private apiURI = "http://localhost:8080";
   constructor(private http: HttpClient) {}
 
   CreateRoom(): Observable<CreateRoomResponse>{

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/gorilla/websocket"
 	"github.com/progate-hackathon-ari/backend/cmd/config"
@@ -47,7 +48,7 @@ const (
 	StateGameEnd   NextState = "game_end"
 )
 
-type NextResponse[T NextRoundImage | EndGame] struct {
+type NextResponse[T NextRoundImage | EndGameResult] struct {
 	State NextState `json:"state"`
 	Data  T         `json:"data"`
 }
@@ -61,8 +62,13 @@ type OneGame struct {
 	ImageURI string `json:"image_uri"`
 }
 
+type EndGameResult struct {
+	Result map[string]EndGame `json:"result"`
+}
+
 type EndGame struct {
-	Result map[string]map[int]OneGame `json:"result"`
+	PerUser map[int]OneGame `json:"per_user"`
+	Score   int             `json:"img_score"`
 }
 
 func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
@@ -93,22 +99,36 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			}
 		}
 
-		resultMap := make(map[string]map[int]OneGame, len(players))
+		resultMap := EndGameResult{
+			Result: make(map[string]EndGame, room.GameSize),
+		}
+
 		for _, player := range players {
-			resultMap[player.ConnectionID] = make(map[int]OneGame, room.GameSize)
+			result := EndGame{
+				PerUser: make(map[int]OneGame, room.GameSize),
+				Score:   0,
+			}
 			for i := 0; i < int(room.GameSize); i++ {
-				resultMap[player.ConnectionID][i] = OneGame{
+				result.PerUser[i] = OneGame{
 					Prompt:   promptMap[player.ConnectionID][i],
 					ImageURI: fmt.Sprintf("%s/%s/%s/%d.jpg", config.Config.Aws.CloudFrontURI, roomID, player.ConnectionID, i),
 				}
 			}
+
+			score, err := i.bedrock.ComparePrompt(ctx, promptMap[player.ConnectionID][0], promptMap[player.ConnectionID][int(room.GameSize)-1])
+			if err != nil {
+				return err
+			}
+			log.Println(score)
+			result.Score = score
+
+			resultMap.Result[player.ConnectionID] = result
+
 		}
 
-		data, err := json.Marshal(&NextResponse[EndGame]{
+		data, err := json.Marshal(&NextResponse[EndGameResult]{
 			State: StateGameEnd,
-			Data: EndGame{
-				Result: resultMap,
-			},
+			Data:  resultMap,
 		})
 		if err != nil {
 			return err

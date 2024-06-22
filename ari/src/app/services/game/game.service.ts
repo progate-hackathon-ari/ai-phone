@@ -57,7 +57,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventJoin,
       roomId: roomId,
-      data: btoa(data),
+      data: this.encodeBase64(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -76,7 +76,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventAnswer,
       roomId: this.roomId,
-      data: btoa(data),
+      data: this.encodeBase64(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -130,6 +130,11 @@ export class GameService {
       throw new Error('connection is not initialized')
     }
     this.connection.next(btoa(data))
+  }
+
+  encodeBase64(data: string): string {
+    return btoa(encodeURIComponent(data))
+
   }
 }
 

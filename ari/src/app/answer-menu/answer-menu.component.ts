@@ -31,7 +31,7 @@ export class AnswerMenuComponent implements OnInit, OnDestroy{
     this.dsub = this.dataSubscribe.subscribe();
 
     this.Subs = this.dsub.subscribe(data => {
-      const json = JSON.parse(data)
+      let json = JSON.parse(data)
 
       if (json.is_done != undefined) {
         this.countDown = ( '000' + json.count ).slice( -2 );
@@ -49,6 +49,9 @@ export class AnswerMenuComponent implements OnInit, OnDestroy{
           this.router.navigateByUrl('/answer').then();
           return;
         }
+
+        json = json.data as AnswerData
+        this.imageUri = json.image_uri
       }else if(json.state === "game_end") {
         this.router.navigateByUrl('/result').then()
       }
