@@ -6,17 +6,19 @@
     <div class="player-list">
         <ul>
             <li *ngFor="let player of players" (click)="selectPlayer(player)" [class.selected]="player === selectedPlayer">
-                {{ player.name }}
+                {{ player.id }}
             </li>
         </ul>
     </div>
     <div class="player-info" *ngIf="selectedPlayer">
+      <div *ngFor="let playerData of selectedPlayer.data">
         <div class="user-tag">
-            <p class="name">{{ selectedPlayer.name }}</p>
-            <p class="prompt">{{ selectedPlayer.prompt }}</p>
+          <p class="name">{{ selectedPlayer.id }}</p>
+          <p class="prompt">{{ playerData.prompt }}</p>
         </div>
         <div class="ai-tag">
-            <img src="{{selectedPlayer.image_uri}}" alt="Player Image">
+          <img src="{{playerData.image_uri}}" alt="Player Image">
         </div>
+      </div>
     </div>
 </div>
