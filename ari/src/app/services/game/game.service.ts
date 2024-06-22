@@ -32,7 +32,7 @@ export class GameService {
     // TODO: envからendpointを取るようにする
     if (!this.connection) {
       this.connection = webSocket({
-        url: `ws://ai-phone-alb-345985775.us-east-1.elb.amazonaws.com/game`,
+        url: `ws://localhost:8080/game`,
         deserializer: (e: MessageEvent) => e.data,
       })
     }
@@ -57,7 +57,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventJoin,
       roomId: roomId,
-      data: this.encodeBase64(data),
+      data: btoa(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -76,7 +76,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventAnswer,
       roomId: this.roomId,
-      data: this.encodeBase64(data),
+      data: btoa(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -130,11 +130,6 @@ export class GameService {
       throw new Error('connection is not initialized')
     }
     this.connection.next(btoa(data))
-  }
-
-  encodeBase64(data: string): string {
-    return btoa(encodeURIComponent(data))
-
   }
 }
 
