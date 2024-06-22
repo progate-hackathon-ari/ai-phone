@@ -12,6 +12,8 @@ type Bedrock interface {
 	GenerateImageFromText(ctx context.Context, prompt, negativePrompt, style string) ([][]byte, error)
 	// Cloude
 	BuildPrompt(ctx context.Context, prompt string) (*Prompts, error)
+	// Cloude
+	ComparePrompt(ctx context.Context, first, last string) (int, error)
 }
 
 type BedrockService struct {
