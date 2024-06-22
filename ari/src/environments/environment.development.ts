@@ -1,3 +1,3 @@
 export const environment = {
-  BackendURI: 'http://localhost:8080',
+  BackendURI: 'http://ai-phone-alb-345985775.us-east-1.elb.amazonaws.com',
 };
