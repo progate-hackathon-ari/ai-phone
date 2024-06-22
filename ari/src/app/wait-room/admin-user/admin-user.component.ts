@@ -60,9 +60,12 @@ export class AdminUserComponent implements OnInit , OnDestroy{
 
   onClickStart(){
     if (this.roomId === undefined) return
-    this.http.UpdateRoom(this.roomId, this.selectedOption)
-    this.gameService.sendReady()
-    this.router.navigateByUrl("/countdown").then()
+    const result = this.http.UpdateRoom(this.roomId, this.selectedOption)
+
+    result.subscribe(data => {
+        this.gameService.sendReady()
+        this.router.navigateByUrl("/countdown").then()
+    })
   }
 
 }
