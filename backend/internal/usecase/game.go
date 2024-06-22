@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/gorilla/websocket"
 	"github.com/progate-hackathon-ari/backend/cmd/config"
@@ -98,11 +99,14 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			}
 		}
 
-		resultMap := EndGameResult{}
+		resultMap := EndGameResult{
+			Result: make(map[string]EndGame, room.GameSize),
+		}
 
 		for _, player := range players {
 			result := EndGame{
 				PerUser: make(map[int]OneGame, room.GameSize),
+				Score:   0,
 			}
 			for i := 0; i < int(room.GameSize); i++ {
 				result.PerUser[i] = OneGame{
@@ -115,7 +119,7 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			if err != nil {
 				return err
 			}
-
+			log.Println(score)
 			result.Score = score
 
 			resultMap.Result[player.ConnectionID] = result
