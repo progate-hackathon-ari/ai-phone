@@ -11,10 +11,11 @@
         </ul>
     </div>
     <div class="player-info" *ngIf="selectedPlayer">
+        <p class="score">スコア：{{selectedPlayer.data[0].score}}</p>
         <ng-container *ngFor="let playerData of selectedPlayer.data">
             <div class="user-tag">
-                <p class="name">{{ selectedPlayer.id }}</p>
-                <p class="prompt">{{ playerData.prompt }}</p>
+                <p class="name">{{ playerData.user }}</p>
+                <p class="prompt">お題：{{ playerData.prompt }}</p>
             </div>
             <div class="ai-tag">
                 <img src="{{playerData.image_uri}}" alt="Player Image">
