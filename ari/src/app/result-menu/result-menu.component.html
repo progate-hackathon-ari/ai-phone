@@ -1,26 +1,22 @@
-<div>
-  <div class="header">
+<header>
     <h1>結果画面</h1>
-  </div>
-
-  <div class="menu">
-    <div class="playerList">
-      <div class="playerButton">
-        Player1
-      </div>
-      <div class="playerButton">
-        Player1
-      </div>
-      <div class="playerButton">
-        Player1
-      </div>
-      <div class="playerButton">
-        Player1
-      </div>
+    <button>HOMEに戻る</button>
+</header>
+<div class="container">
+    <div class="player-list">
+        <ul>
+            <li *ngFor="let player of players" (click)="selectPlayer(player)" [class.selected]="player === selectedPlayer">
+                {{ player.name }}
+            </li>
+        </ul>
     </div>
-
-    <div class="chatMenu">
-
+    <div class="player-info" *ngIf="selectedPlayer">
+        <div class="user-tag">
+            <p class="name">{{ selectedPlayer.name }}</p>
+            <p class="prompt">{{ selectedPlayer.prompt }}</p>
+        </div>
+        <div class="ai-tag">
+            <img src="{{selectedPlayer.image_uri}}" alt="Player Image">
+        </div>
     </div>
-  </div>
 </div>
