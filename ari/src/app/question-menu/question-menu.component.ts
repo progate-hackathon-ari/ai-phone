@@ -13,26 +13,33 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   }
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
-  isButtonVisible = true;
   isButtonEnabled = true;
+  countDown = "30";
 
   ngOnInit(): void {
     if (!this.gameService.connection) {
       this.router.navigateByUrl('/home').then()
     }
 
+    this.gameService.sendCountDown(10)
+
     this.dsub = this.dataSubscribe.subscribe();
 
     this.Subs = this.dsub.subscribe(data => {
         const json = JSON.parse(data)
-        console.log(json)
+
+        if (json.is_done != undefined) {
+          this.countDown = ( '000' + json.count ).slice( -2 );
+          if (json.is_done && this.isButtonEnabled){
+            this.onClickSubmit()
+          }
+        }
+
         if (json.is_all_user_answered) {
           if (this.gameService.isAdmin){
             this.gameService.sendNext()
           }
-        }
-
-        if (json.state === "next_round") {
+        }else if (json.state === "next_round") {
           if (!json.data){
             this.router.navigateByUrl('/answer').then();
             return;
@@ -50,16 +57,17 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
     }
   }
 
-  question: string = ''; // デフォルト値を設定
+  question: string = '';
 
   onChangeQuestion(event:any): void {
     this.question = event.target.value;
   }
 
   onClickSubmit(){
-    console.log(this.question)
-    this.gameService.sendAnswer(this.question)
-    this.isButtonVisible = false;
+    if (this.question === ''){
+      this.question = 'No answer'
+    }
     this.isButtonEnabled = false;
+    this.gameService.sendAnswer(this.question)
   }
 }
