@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
@@ -70,7 +71,6 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 				log.Error(ctx, "falied to read message", "error", err)
 				return err
 			}
-			fmt.Println(string(msg))
 
 			msg = bytes.ReplaceAll(msg, []byte("\""), []byte(""))
 			// decode base64
@@ -132,13 +132,18 @@ func SocketGameRoom(repo repository.DataAccess, s3 s3.S3, bedrock bedrock.Bedroc
 }
 
 func unmarshal[T any](s string) (T, error) {
-	msg, err := base64.StdEncoding.DecodeString(s)
+	msg, err := base64.URLEncoding.DecodeString(s)
 	if err != nil {
 		return *new(T), err
 	}
+	fmt.Println(string(msg))
 
+	str, err := url.QueryUnescape(string(msg))
+	if err != nil {
+		return *new(T), err
+	}
 	var t T
-	if err = json.Unmarshal(msg, &t); err != nil {
+	if err = json.Unmarshal([]byte(str), &t); err != nil {
 		return *new(T), err
 	}
 

@@ -56,6 +56,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
 
   copyUrl(){
     navigator.clipboard.writeText(`${document.location.origin}/invited-home?roomId=${this.roomId}`).then();
+    alert("Copied the URL");
   }
 
   onClickStart(){

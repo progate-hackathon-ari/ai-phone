@@ -24,6 +24,7 @@ export class GameService {
   connection: WebSocketSubject<string> | undefined
   roomId: string | undefined
   subscriptions: Observable<string>[] =[]
+  isAdmin: boolean = false
 
   constructor(private dataSubs: dataSubscribe){}
 
@@ -31,7 +32,7 @@ export class GameService {
     // TODO: envからendpointを取るようにする
     if (!this.connection) {
       this.connection = webSocket({
-        url: `ws://localhost:8080/game`,
+        url: `wss://ai-phone-api.seafood-dev.com/game`,
         deserializer: (e: MessageEvent) => e.data,
       })
     }
@@ -56,7 +57,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventJoin,
       roomId: roomId,
-      data: btoa(data),
+      data: this.encodeBase64(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -75,7 +76,7 @@ export class GameService {
     let message: MessageTemplate = {
       event: EventType.EventAnswer,
       roomId: this.roomId,
-      data: btoa(data),
+      data: this.encodeBase64(data),
     }
 
     this.sendData(JSON.stringify(message))
@@ -129,6 +130,11 @@ export class GameService {
       throw new Error('connection is not initialized')
     }
     this.connection.next(btoa(data))
+  }
+
+  encodeBase64(data: string): string {
+    return btoa(encodeURIComponent(data))
+
   }
 }
 

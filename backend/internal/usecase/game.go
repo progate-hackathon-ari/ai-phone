@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/gorilla/websocket"
+	"github.com/progate-hackathon-ari/backend/cmd/config"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
@@ -38,8 +39,6 @@ type Dummy struct {
 	State NextState `json:"state"`
 }
 
-const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
-
 type NextState string
 
 const (
@@ -48,7 +47,7 @@ const (
 	StateGameEnd   NextState = "game_end"
 )
 
-type NextResponse[T NextRoundImage | EndGame] struct {
+type NextResponse[T NextRoundImage | EndGameResult] struct {
 	State NextState `json:"state"`
 	Data  T         `json:"data"`
 }
@@ -57,13 +56,28 @@ type NextRoundImage struct {
 	ImageURI string `json:"image_uri"`
 }
 
-type OneGame struct {
-	Prompt   string `json:"prompt"`
-	ImageURI string `json:"image_uri"`
+type EndGameResult struct {
+	Result map[string]EndGame `json:"result"`
 }
 
 type EndGame struct {
-	Result map[string]map[int]OneGame `json:"result"`
+	PerUser map[int]Game `json:"per_user"`
+	Score   int          `json:"img_score"`
+}
+
+type Game struct {
+	Username string `json:"username"`
+	Img      string `json:"img"`
+	Prompt   string `json:"answer"`
+}
+
+func findGame(data map[string][]model.InGamePrompt, conID string, index int) *model.InGamePrompt {
+	for _, prompt := range data[conID] {
+		if int(prompt.GameIndex) == index {
+			return &prompt
+		}
+	}
+	return nil
 }
 
 func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
@@ -84,32 +98,61 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		if err != nil {
 			return err
 		}
-
-		promptMap := make(map[string]map[int]string, room.GameSize)
-
-		for _, prompt := range prompts {
-			promptMap[prompt.ConnectionID] = make(map[int]string, room.GameSize)
-			for i := 0; i < int(room.GameSize); i++ {
-				promptMap[prompt.ConnectionID][i] = prompt.Prompt
-			}
+		// conID : name
+		userMap := make(map[string]string, len(players))
+		useriMap := make(map[int]string, len(players))
+		for _, player := range players {
+			userMap[player.ConnectionID] = player.Username
+			useriMap[int(player.Index)] = player.ConnectionID
 		}
 
-		resultMap := make(map[string]map[int]OneGame, len(players))
-		for _, player := range players {
-			resultMap[player.ConnectionID] = make(map[int]OneGame, room.GameSize)
-			for i := 0; i < int(room.GameSize); i++ {
-				resultMap[player.ConnectionID][i] = OneGame{
-					Prompt:   promptMap[player.ConnectionID][i],
-					ImageURI: fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, i),
+		perGame := make(map[string][]model.InGamePrompt, room.GameSize)
+		for _, prompt := range prompts {
+			perGame[prompt.ConnectionID] = append(perGame[prompt.ConnectionID], prompt)
+		}
+
+		result := make(map[string]map[int]Game, room.GameSize)
+
+		for i, conID := range useriMap {
+			result[conID] = make(map[int]Game, room.GameSize)
+			for j := 1; j <= int(room.GameSize); j++ {
+				useri := j + i - 1
+				if useri > len(players) {
+					useri = useri - len(players)
+				}
+				inGame := findGame(perGame, useriMap[useri], j)
+				if inGame != nil {
+					result[conID][j] = Game{
+						Username: userMap[inGame.ConnectionID],
+						Img:      fmt.Sprintf("%s/%s/%s/%d.jpg", config.Config.Aws.CloudFrontURI, roomID, inGame.ConnectionID, j),
+						Prompt:   inGame.Prompt,
+					}
 				}
 			}
 		}
 
-		data, err := json.Marshal(&NextResponse[EndGame]{
+		resultMap := EndGameResult{
+			Result: make(map[string]EndGame, room.GameSize),
+		}
+
+		for conID, r := range result {
+			result := EndGame{
+				PerUser: r,
+				Score:   0,
+			}
+
+			score, err := i.bedrock.ComparePrompt(ctx, r[0].Prompt, r[int(room.GameSize)-1].Prompt)
+			if err != nil {
+				return err
+			}
+			result.Score = score
+
+			resultMap.Result[userMap[conID]] = result
+		}
+
+		data, err := json.Marshal(&NextResponse[EndGameResult]{
 			State: StateGameEnd,
-			Data: EndGame{
-				Result: resultMap,
-			},
+			Data:  resultMap,
 		})
 		if err != nil {
 			return err
@@ -143,15 +186,13 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		playersMap[int(player.Index)] = player
 	}
 
-	numberOfPlayer := len(players)
 	for _, player := range players {
-		if numberOfPlayer == int(player.Index) {
-			if err := sendImage(roomID, playersMap[int(room.CurrentGame)].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
-				return err
-			}
+		pindex := int(player.Index+room.CurrentGame) - 1
+		if pindex > len(players) {
+			pindex = pindex - len(players)
 		}
 
-		if err := sendImage(roomID, playersMap[int(room.CurrentGame+player.Index)-1].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
+		if err := sendImage(roomID, player.ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", config.Config.Aws.CloudFrontURI, roomID, playersMap[pindex].ConnectionID, room.CurrentGame-1)); err != nil {
 			return err
 		}
 	}
