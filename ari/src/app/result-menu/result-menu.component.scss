@@ -97,18 +97,16 @@ h1 {
       .user-tag, .ai-tag {
         position: relative;
         border-radius: 10px;
-        padding: 10px;
+        padding: 5px;
         color: #000;
         max-width: 600px;
         margin: 10px 0;
       }
 
-      div {
 
         .user-tag {
           background: #c3e6cb;
           align-self: flex-end;
-
           &::after {
             content: '';
             position: absolute;
@@ -126,7 +124,8 @@ h1 {
           }
 
           .prompt {
-            font-size: 25px;
+            font-size: 20px;
+            font-weight: bold;
             margin-top: 5px;
           }
         }
@@ -161,5 +160,4 @@ h1 {
           }
         }
       }
-    }
   }

@@ -72,3 +72,4 @@ export class ResultMenuComponent implements OnInit, OnDestroy{
     this.selectedPlayer = player;
   }
 }
+

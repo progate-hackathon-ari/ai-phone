@@ -11,14 +11,15 @@
         </ul>
     </div>
     <div class="player-info" *ngIf="selectedPlayer">
-      <div *ngFor="let playerData of selectedPlayer.data">
-        <div class="user-tag">
-          <p class="name">{{ selectedPlayer.id }}</p>
-          <p class="prompt">{{ playerData.prompt }}</p>
-        </div>
-        <div class="ai-tag">
-          <img src="{{playerData.image_uri}}" alt="Player Image">
-        </div>
-      </div>
+        <ng-container *ngFor="let playerData of selectedPlayer.data">
+            <div class="user-tag">
+                <p class="name">{{ selectedPlayer.id }}</p>
+                <p class="prompt">{{ playerData.prompt }}</p>
+            </div>
+            <div class="ai-tag">
+                <img src="{{playerData.image_uri}}" alt="Player Image">
+            </div>
+        </ng-container>
+        
     </div>
 </div>
