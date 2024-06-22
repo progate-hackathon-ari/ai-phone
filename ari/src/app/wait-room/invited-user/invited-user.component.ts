@@ -21,7 +21,8 @@ export class InvitedUserComponent implements OnInit, OnDestroy{
   players: PlayerData[] = []
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
-
+  roomId: string | undefined = this.gameService.roomId
+  
   ngOnInit(): void {
     if (!this.gameService.connection) {
       this.router.navigateByUrl('/home').then()
@@ -38,6 +39,10 @@ export class InvitedUserComponent implements OnInit, OnDestroy{
         this.router.navigateByUrl('/countdown').then()
       }
     })
+  }
+  copyUrl(){
+    navigator.clipboard.writeText(`${document.location.origin}/invited-home?roomId=${this.roomId}`).then();
+    alert("Copied the URL");
   }
 
   ngOnDestroy(): void {

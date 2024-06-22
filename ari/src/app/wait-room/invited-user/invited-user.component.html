@@ -6,7 +6,7 @@
         </div>
       <div class="playerandbutton">
         <div class="wait-user">
-            <button class="invite-button">招待URL</button>
+            <button class="invite-button" (click)="copyUrl()">招待URL</button>
             <ul>
                 <p class="user-title">プレイヤー一覧</p>
                 <div *ngFor="let player of players">
