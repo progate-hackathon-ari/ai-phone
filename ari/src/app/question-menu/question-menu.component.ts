@@ -13,6 +13,8 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   }
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
+  isButtonVisible = true;
+  isButtonEnabled = true;
 
   ngOnInit(): void {
     if (!this.gameService.connection) {
@@ -57,5 +59,7 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   onClickSubmit(){
     console.log(this.question)
     this.gameService.sendAnswer(this.question)
+    this.isButtonVisible = false;
+    this.isButtonEnabled = false;
   }
 }

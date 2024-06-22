@@ -3,6 +3,5 @@
   <p>生成させたい画像のお題を書こう！</p>
   <div class="input-zone">
     <input type="text" placeholder="お題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
-    <button class="button" (click)="onClickSubmit()">完了！</button>
-  </div>
+    <button class="button" *ngIf="isButtonVisible" [disabled]="!isButtonEnabled" (click)="onClickSubmit()">完了！</button>  </div>
 </div>

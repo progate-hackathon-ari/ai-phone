@@ -18,6 +18,8 @@ export class AnswerMenuComponent implements OnInit, OnDestroy{
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
   imageUri: string = '';
+  isButtonVisible = true;
+  isButtonEnabled = true;
 
   ngOnInit(): void {
     console.log("answer")
@@ -69,5 +71,7 @@ export class AnswerMenuComponent implements OnInit, OnDestroy{
   onClickSubmit(){
     console.log(this.question)
     this.gameService.sendAnswer(this.question)
+    this.isButtonVisible = false;
+    this.isButtonEnabled = false;
   }
 }
