@@ -32,7 +32,7 @@ export class GameService {
     // TODO: envからendpointを取るようにする
     if (!this.connection) {
       this.connection = webSocket({
-        url: `ws://ai-phone-alb-345985775.us-east-1.elb.amazonaws.com/game`,
+        url: `wss://ai-phone-api.seafood-dev.com/game`,
         deserializer: (e: MessageEvent) => e.data,
       })
     }
