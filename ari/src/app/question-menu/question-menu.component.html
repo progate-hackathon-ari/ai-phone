@@ -1,9 +1,8 @@
 <h1>00:30</h1>
 <div class="container">
-    <p>生成させたい画像のお題を書こう！</p>
+  <p>生成させたい画像のお題を書こう！</p>
   <div class="input-zone">
-    <input type="text" placeholder="お題を入力してください！..."/>
-    <button class="button" routerLink="/admin">完了！</button>
+    <input type="text" placeholder="お題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
+    <button class="button" (click)="onClickSubmit()">完了！</button>
   </div>
 </div>
-

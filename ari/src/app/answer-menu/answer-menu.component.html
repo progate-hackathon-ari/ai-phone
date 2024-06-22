@@ -1,9 +1,9 @@
 <h1>00:30</h1>
 <div class="container">
-    <p>画像から想像する文章を書こう！</p>
-  <img src="assets/sample.jpeg" alt=""/>
+  <p>画像から想像する文章を書こう！</p>
+  <img [src]="imageUri">
   <div class="input-zone">
-    <input type="text" placeholder="思いついたお題を入力してください！..."/>
-    <button class="button" routerLink="/admin">提出！</button>
+    <input type="text" placeholder="思いついたお題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
+    <button class="button" (click)="onClickSubmit()">提出！</button>
   </div>
 </div>

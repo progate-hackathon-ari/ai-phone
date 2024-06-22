@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {GameService} from "./services/game/game.service";
 import { CountdownComponent } from './countdown/countdown.component';
 import { InvitedHomeScreenComponent } from './home/invited-home-screen/invited-home-screen.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -26,11 +27,12 @@ import { InvitedHomeScreenComponent } from './home/invited-home-screen/invited-h
     InvitedHomeScreenComponent,
     AdminUserComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgOptimizedImage,
+    ],
   providers: [
     GameService
   ],

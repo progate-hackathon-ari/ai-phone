@@ -27,7 +27,7 @@ func (i *GameInteractor) ReadyGame(ctx context.Context, roomID string) error {
 		return err
 	}
 
-	Counter(roomID, 5)
+	Counter(roomID, 3)
 
 	return nil
 }

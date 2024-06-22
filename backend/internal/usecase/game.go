@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/gorilla/websocket"
+	"github.com/progate-hackathon-ari/backend/cmd/config"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/bedrock"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/s3"
@@ -37,8 +38,6 @@ func (i *GameInteractor) CountDown(ctx context.Context, count int) error {
 type Dummy struct {
 	State NextState `json:"state"`
 }
-
-const baseS3URL = "https://ai-phone.s3.amazonaws.com/"
 
 type NextState string
 
@@ -100,7 +99,7 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 			for i := 0; i < int(room.GameSize); i++ {
 				resultMap[player.ConnectionID][i] = OneGame{
 					Prompt:   promptMap[player.ConnectionID][i],
-					ImageURI: fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, i),
+					ImageURI: fmt.Sprintf("%s/%s/%s/%d.jpg", config.Config.Aws.CloudFrontURI, roomID, player.ConnectionID, i),
 				}
 			}
 		}
@@ -143,15 +142,13 @@ func (i *GameInteractor) NextRound(ctx context.Context, roomID string) error {
 		playersMap[int(player.Index)] = player
 	}
 
-	numberOfPlayer := len(players)
 	for _, player := range players {
-		if numberOfPlayer == int(player.Index) {
-			if err := sendImage(roomID, playersMap[int(room.CurrentGame)].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
-				return err
-			}
+		pindex := int(player.Index+room.CurrentGame) - 1
+		if pindex > len(players) {
+			pindex = pindex - len(players)
 		}
 
-		if err := sendImage(roomID, playersMap[int(room.CurrentGame+player.Index)-1].ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", baseS3URL, roomID, player.ConnectionID, room.CurrentGame-1)); err != nil {
+		if err := sendImage(roomID, player.ConnectionID, fmt.Sprintf("%s/%s/%s/%d.jpg", config.Config.Aws.CloudFrontURI, roomID, playersMap[pindex].ConnectionID, room.CurrentGame-1)); err != nil {
 			return err
 		}
 	}

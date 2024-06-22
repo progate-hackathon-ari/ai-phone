@@ -16,6 +16,10 @@ func LoadEnv(envfile ...string) error {
 
 	config := config{}
 
+	if err := env.Parse(&config.Aws); err != nil {
+		return err
+	}
+
 	if err := env.Parse(&config.Database); err != nil {
 		return err
 	}
