@@ -4,6 +4,6 @@
   <img [src]="imageUri">
   <div class="input-zone">
     <input type="text" placeholder="思いついたお題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
-    <button class="button" (click)="onClickSubmit()">提出！</button>
+    <button class="button" *ngIf="isButtonVisible" [disabled]="!isButtonEnabled" (click)="onClickSubmit()">完了！</button>
   </div>
 </div>

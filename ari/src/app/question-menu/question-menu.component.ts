@@ -13,11 +13,13 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   }
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
+  isButtonVisible = true;
+  isButtonEnabled = true;
 
   ngOnInit(): void {
-    // if (!this.gameService.connection) {
-    //   this.router.navigateByUrl('/home').then()
-    // }
+    if (!this.gameService.connection) {
+      this.router.navigateByUrl('/home').then()
+    }
 
     this.dsub = this.dataSubscribe.subscribe();
 
@@ -26,7 +28,6 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
         console.log(json)
         if (json.is_all_user_answered) {
           if (this.gameService.isAdmin){
-            console.log("aa")
             this.gameService.sendNext()
           }
         }
@@ -36,6 +37,8 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
             this.router.navigateByUrl('/answer').then();
             return;
           }
+        }else if(json.state === "game_end") {
+          this.router.navigateByUrl('/result').then()
         }
     })
 
@@ -56,5 +59,7 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   onClickSubmit(){
     console.log(this.question)
     this.gameService.sendAnswer(this.question)
+    this.isButtonVisible = false;
+    this.isButtonEnabled = false;
   }
 }

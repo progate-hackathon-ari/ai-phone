@@ -9,7 +9,7 @@ import (
 )
 
 func NewConfig() aws.Config {
-	sdkConfig, err := config.LoadDefaultConfig(context.Background(), config.WithRegion("us-east-1"))
+	sdkConfig, err := config.LoadDefaultConfig(context.Background(), config.WithRegion("us-west-2"))
 	if err != nil {
 		log.Fatal(context.Background(), err.Error())
 	}
