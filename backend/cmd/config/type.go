@@ -13,7 +13,7 @@ const (
 
 type config struct {
 	Aws struct {
-		CloudFrontURI string `json:"CLOUD_FRONT_URI" envDefault:"https://dh93p4xay7grb.cloudfront.net"`
+		CloudFrontURI string `json:"CLOUD_FRONT_URI" envDefault:"https://d14ubbdtfe7bkh.cloudfront.net"`
 		S3BucketName  string `json:"S3_BUCKET_NAME" envDefault:"ai-phone-us-west-2"`
 	}
 	Database struct {
