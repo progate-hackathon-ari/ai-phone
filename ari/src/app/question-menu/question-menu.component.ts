@@ -17,7 +17,8 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
   countDown = "30";
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
+    history.replaceState(null,"",`${document.location.origin}/`);
+    if (!this.gameService.roomId) {
       this.router.navigateByUrl('/home').then()
     }
 

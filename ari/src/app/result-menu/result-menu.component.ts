@@ -15,7 +15,8 @@ export class ResultMenuComponent implements OnInit, OnDestroy{
   Subs: Subscription | undefined;
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
+    history.replaceState(null,"",`${document.location.origin}/`);
+    if (!this.gameService.roomId) {
       this.router.navigateByUrl('/home').then()
     }
 

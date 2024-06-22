@@ -21,6 +21,10 @@ export class CountdownComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    history.replaceState(null,"",`${document.location.origin}`);
+    if (!this.gameService.roomId) {
+      this.router.navigateByUrl('/home').then()
+    }
 
     this.dsub = this.dataSubs.subscribe();
 
