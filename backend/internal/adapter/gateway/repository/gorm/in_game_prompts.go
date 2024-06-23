@@ -21,6 +21,6 @@ func (r *IngamePromptRepository) CreateIngamePrompt(ctx context.Context, room *m
 
 func (r *IngamePromptRepository) GetIngamePrompts(ctx context.Context, roomID string) ([]model.InGamePrompt, error) {
 	var prompts []model.InGamePrompt
-	err := r.db.Find(&prompts).Error
+	err := r.db.Where("room_id = ?", roomID).Find(&prompts).Error
 	return prompts, err
 }

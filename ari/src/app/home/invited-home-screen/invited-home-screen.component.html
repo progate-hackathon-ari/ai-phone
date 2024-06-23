@@ -1,7 +1,7 @@
 <body>
     <div class="container">
         <h1 class="logo">AI-PHONE</h1>
-        <input type="text" class="name-input" placeholder="名前を入力" (keyup)="onChangeNameInput($event)">
+        <input type="text" class="name-input" placeholder="名前を入力" maxlength="20" (keyup)="onChangeNameInput($event)">
             <!-- routerLinは仮置き -->
         <button class="create-button" (click)="onClickJoinRoom()">ルームに入る</button>
     </div>

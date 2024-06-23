@@ -8,32 +8,35 @@ interface Player {
     score: number | undefined;
     data: DataList[];
 }
+
 interface PerUser {
-    [key: string]: {
-        img: string;
-        answer: string;
-        username:string;
-    };
+  [key: string]: {
+    img: string;
+    answer: string;
+    username: string;
+  };
 }
+
 interface ImgScore {
-    per_user: PerUser;
-    score: number;
+  per_user: PerUser;
+  score: number;
 }
 
 interface Result {
-    [key: string]: ImgScore;
+  [key: string]: ImgScore;
 }
 
 interface DataStructure {
-    state: string;
-    data: {
-        result: Result;
-    };
+  state: string;
+  data: {
+    result: Result;
+  };
 }
-interface DataList{
+
+interface DataList {
   prompt: string;
   image_uri: string;
-user: string;
+  user: string;
   score?: number;
 }
 
@@ -77,13 +80,14 @@ const data = `{
 }`;
 
 @Component({
-    selector: 'app-result-menu',
-    templateUrl: './result-menu.component.html',
-    styleUrl: './result-menu.component.scss'
+  selector: 'app-result-menu',
+  templateUrl: './result-menu.component.html',
+  styleUrl: './result-menu.component.scss'
 })
-export class ResultMenuComponent implements OnInit, OnDestroy{
-    constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe) {
-    }
+export class ResultMenuComponent implements OnInit, OnDestroy {
+  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe) {
+  }
+
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
   players: Player[] = []
@@ -145,6 +149,10 @@ export class ResultMenuComponent implements OnInit, OnDestroy{
   selectPlayer(player: Player): void {
     this.selectedPlayer = player;
     console.log(this.selectedPlayer);
+  }
+
+  onClickHome(){
+    this.router.navigateByUrl(`${document.location.origin}/`).then()
   }
 }
 
