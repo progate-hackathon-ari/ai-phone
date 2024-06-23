@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -22,13 +23,17 @@ func UpdateRoom(i *usecase.RoomInteractor) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
 
-		var req UpdateRoomRequest
-		if err := c.Bind(&req); err != nil {
-			log.Error(ctx, "failed to bind request", err)
-			return echo.ErrBadRequest
+		json_map := make(map[string]interface{})
+		err := json.NewDecoder(c.Request().Body).Decode(&json_map)
+		if err != nil {
+			return err
 		}
 
-		room, err := i.UpdateRoom(ctx, req.RoomID, req.ExtraPrompt)
+		log.Info(ctx, "request", json_map["request"])
+
+		c.Param("room_id")
+
+		room, err := i.UpdateRoom(ctx, c.Param("room_id"), json_map["request"].(map[string]interface{})["extraPrompt"].(string))
 		if err != nil {
 			log.Error(ctx, "faled to create room", err)
 			return echo.ErrInternalServerError

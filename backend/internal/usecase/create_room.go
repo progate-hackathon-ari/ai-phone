@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/progate-hackathon-ari/backend/internal/adapter/gateway/repository"
@@ -45,7 +46,7 @@ func (i *RoomInteractor) UpdateRoom(ctx context.Context, roomID, extraPrompt str
 	if extraPrompt == "" {
 		extraPrompt = "\n"
 	}
-
+	log.Println(extraPrompt)
 	room := &model.Room{
 		RoomID:      roomID,
 		ExtraPrompt: extraPrompt,
