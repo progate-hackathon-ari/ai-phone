@@ -3,7 +3,7 @@
   <p *ngIf="isButtonEnabled">生成させたい画像のお題を書こう！</p>
   <p *ngIf="!isButtonEnabled">他のプレイヤーが画像を生成するのを待っています</p>
   <div class="input-zone">
-    <input type="text" placeholder="お題を入力してください！..." (keyup)="onChangeQuestion($event)"/>
+    <input type="text" placeholder="思いついたお題を入力してください！..." maxlength="199" [disabled]="!isButtonEnabled" (keyup)="onChangeQuestion($event)"/>
     <button class="button" *ngIf="isButtonEnabled" [disabled]="!isButtonEnabled" (click)="onClickSubmit()">完了！</button>
   </div>
 </div>
