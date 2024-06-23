@@ -28,16 +28,17 @@ export class AdminUserComponent implements OnInit , OnDestroy{
   roomId: string | undefined = this.gameService.roomId
 
   ngOnInit(): void {
-    if (!this.gameService.connection) {
+    history.replaceState(null,"",`${document.location.origin}/`);
+    if (!this.gameService.roomId) {
       this.router.navigateByUrl('/home').then()
     }
 
     this.dsub = this.dataSubscribe.subscribe();
 
     this.Subs = this.dsub.subscribe(data => {
-        const json = JSON.parse(data)
-        this.players = json.players
-        console.log(this.players)
+      const json = JSON.parse(data)
+      this.players = json.players
+      console.log(this.players)
     })
 
   }
@@ -54,7 +55,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
     this.selectedOption = option;
   }
 
-  copyUrl(){
+  copyUrl() {
     navigator.clipboard.writeText(`${document.location.origin}/invited-home?roomId=${this.roomId}`).then();
     alert("Copied the URL");
   }
@@ -69,6 +70,4 @@ export class AdminUserComponent implements OnInit , OnDestroy{
         this.router.navigateByUrl("/countdown").then()
     })
   }
-
 }
-

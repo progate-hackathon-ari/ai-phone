@@ -22,9 +22,10 @@ export class InvitedUserComponent implements OnInit, OnDestroy{
   dsub: Observable<any> | undefined;
   Subs: Subscription | undefined;
   roomId: string | undefined = this.gameService.roomId
-  
+
   ngOnInit(): void {
-    if (!this.gameService.connection) {
+    history.replaceState(null,"",`${document.location.origin}/`);
+    if (!this.gameService.roomId) {
       this.router.navigateByUrl('/home').then()
     }
 
