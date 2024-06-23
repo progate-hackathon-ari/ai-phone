@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import { GameService, dataSubscribe } from '../../services/game/game.service';
+import {HttpService} from "../../services/http/http.service";
 
 interface PlayerData {
   connection_id: string
@@ -15,8 +16,8 @@ interface PlayerData {
   templateUrl: './admin-user.component.html',
   styleUrl: './admin-user.component.scss'
 })
-export class AdminUserComponent implements OnInit , OnDestroy {
-  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe) {
+export class AdminUserComponent implements OnInit , OnDestroy{
+  constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe,private http: HttpService) {
 
   }
 
@@ -59,9 +60,13 @@ export class AdminUserComponent implements OnInit , OnDestroy {
     alert("Copied the URL");
   }
 
-  onClickStart() {
-    this.gameService.sendReady()
-    this.gameService.isAdmin = true
-    this.router.navigateByUrl("/countdown").then()
+  onClickStart(){
+    if (this.roomId === undefined) return
+    const result = this.http.UpdateRoom(this.roomId, this.selectedOption)
+
+    result.subscribe(data => {
+        this.gameService.sendReady()
+        this.router.navigateByUrl("/countdown").then()
+    })
   }
 }
