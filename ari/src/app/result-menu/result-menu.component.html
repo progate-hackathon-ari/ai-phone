@@ -15,7 +15,12 @@
         <ng-container *ngFor="let playerData of selectedPlayer.data">
             <div class="user-tag">
                 <p class="name">{{ playerData.user }}</p>
+            <ng-container *ngIf="playerData.key=='0'">
                 <p class="prompt">お題：{{ playerData.prompt }}</p>
+            </ng-container>
+            <ng-container *ngIf="playerData.key!='0'">
+                <p class="prompt">回答：{{ playerData.prompt }}</p>
+            </ng-container>
             </div>
             <div class="ai-tag">
                 <img src="{{playerData.image_uri}}" alt="Player Image">
