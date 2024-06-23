@@ -89,7 +89,7 @@ type Result struct {
 }
 
 func (s *BedrockService) GenerateImageFromText(ctx context.Context, prompt, negativePrompt, style string) ([][]byte, error) {
-	if style == "" {
+	if style == "\n" {
 		style = string(RandomStyle())
 	}
 
@@ -97,17 +97,17 @@ func (s *BedrockService) GenerateImageFromText(ctx context.Context, prompt, nega
 		TextPrompts: []Prompt{
 			{
 				Text:   prompt,
-				Weight: 0.5,
+				Weight: 0.7,
 			},
 			{
 				Text:   negativePrompt,
-				Weight: -0.5,
+				Weight: -0.7,
 			},
 		},
 		// TODO: 調整
-		CfgScale:    7,
+		CfgScale:    5,
 		Seed:        0,
-		Steps:       30,
+		Steps:       50,
 		Width:       1216,
 		Height:      832,
 		StylePreset: StylePreset(style),
