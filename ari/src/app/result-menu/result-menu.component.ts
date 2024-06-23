@@ -5,6 +5,7 @@ import {Observable, Subscription} from "rxjs";
 
 interface Player {
     id: string;
+    score: number | undefined;
     data: DataList[];
 }
 interface PerUser {
@@ -46,12 +47,12 @@ const data = `{
                 "per_user": {
                     "0": {
                         "answer": "No answer",
-                        "img": "https://d14ubbdtfe7bkh.cloudfront.net/0190407b-703b-2b490b/8fc3464e-5d37-4ac4-bfea-5334251f81e4/0.jpg",
+                        "img": "assets/sample.jpeg",
                         "username": "user1"
                     },
                     "1": {
                         "answer": "what",
-                        "img": "https://d14ubbdtfe7bkh.cloudfront.net/0190407b-703b-2b490b/8fc3464e-5d37-4ac4-bfea-5334251f81e4/1.jpg",
+                        "img": "assets/sample.jpeg",
                         "username": "user1"
                     }
                 }
@@ -61,12 +62,12 @@ const data = `{
                 "per_user": {
                     "0": {
                         "answer": "d",
-                        "img": "https://d14ubbdtfe7bkh.cloudfront.net/0190407b-703b-2b490b/9a41f207-6d79-4c4d-bf4c-e3254f2029f2/0.jpg",
+                        "img": "assets/sample.jpeg",
                         "username": "user1"
                     },
                     "1": {
                         "answer": "car",
-                        "img": "https://d14ubbdtfe7bkh.cloudfront.net/0190407b-703b-2b490b/9a41f207-6d79-4c4d-bf4c-e3254f2029f2/1.jpg",
+                        "img": "assets/sample.jpeg",
                         "username": "user1"
                     }
                 }
@@ -111,33 +112,27 @@ export class ResultMenuComponent implements OnInit, OnDestroy{
                 }
                 if ('per_user' in value) {
                     Object.entries(value.per_user as PerUser).forEach(([userKey, userValue]) => {
-                        console.log("img_score 2 " + score);
-                        console.log("key  " + userKey);
-                        console.log("value  " + userValue.answer);
-                        console.log("image  " + userValue.img);
                         listData.push({
                             prompt: userValue.answer,
                             image_uri: userValue.img,
                             user: userValue.username,
-                            score: score // img_score を同じユーザーのデータに含める
+                            score: score 
                         });
                     });
                 }
                     this.players.push({
                       id: key,
+                      score: score,
                       data: listData
                     })
             }
-    
             //   console.log(this.players)
             })
-            
                 this.selectedPlayer = this.players[0]
               }
     }
 )
 
-    //   let json = JSON.parse(data)
 
   }
 

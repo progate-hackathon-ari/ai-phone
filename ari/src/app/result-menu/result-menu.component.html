@@ -11,7 +11,7 @@
         </ul>
     </div>
     <div class="player-info" *ngIf="selectedPlayer">
-        <p class="score">スコア：{{selectedPlayer.data[0].score}}</p>
+        <p class="score">スコア：{{selectedPlayer.score}}点</p>
         <ng-container *ngFor="let playerData of selectedPlayer.data">
             <div class="user-tag">
                 <p class="name">{{ playerData.user }}</p>

@@ -93,7 +93,11 @@ h1 {
       width: 100%; /* 必要に応じて調整 */
       max-height: 100%;
       overflow-y: auto;
-
+        .score{
+            margin:0;
+            font-weight: bold;
+            font-size: 30px;
+        }
       .user-tag, .ai-tag {
         position: relative;
         border-radius: 10px;
