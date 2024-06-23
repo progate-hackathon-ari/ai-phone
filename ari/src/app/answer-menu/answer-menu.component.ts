@@ -47,7 +47,7 @@ export class AnswerMenuComponent implements OnInit, OnDestroy{
         }
       }else if (json.state === "next_round") {
         if (!json.data){
-          this.router.navigateByUrl('/answer').then();
+          this.router.navigateByUrl('/none').then();
           return;
         }
 

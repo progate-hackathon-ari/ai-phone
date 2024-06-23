@@ -14,6 +14,7 @@ import {GameService} from "./services/game/game.service";
 import { CountdownComponent } from './countdown/countdown.component';
 import { InvitedHomeScreenComponent } from './home/invited-home-screen/invited-home-screen.component';
 import {NgOptimizedImage} from "@angular/common";
+import { NoneComponent } from './none/none.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {NgOptimizedImage} from "@angular/common";
     CountdownComponent,
     InvitedHomeScreenComponent,
     AdminUserComponent,
+    NoneComponent,
   ],
     imports: [
         BrowserModule,

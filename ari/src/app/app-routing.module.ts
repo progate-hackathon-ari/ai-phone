@@ -8,6 +8,7 @@ import {ResultMenuComponent} from "./result-menu/result-menu.component";
 import {InvitedUserComponent} from "./wait-room/invited-user/invited-user.component";
 import {CountdownComponent} from "./countdown/countdown.component";
 import {InvitedHomeScreenComponent} from "./home/invited-home-screen/invited-home-screen.component";
+import {NoneComponent} from "./none/none.component";
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeScreenComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
     {path: 'invited', component: InvitedUserComponent},
     {path: "countdown", component:CountdownComponent},
     {path : 'invited-home', component: InvitedHomeScreenComponent},
+    {path: "none", component: NoneComponent}
 ];
 
 @NgModule({

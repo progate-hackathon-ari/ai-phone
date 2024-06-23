@@ -22,7 +22,7 @@ export class QuestionMenuComponent implements OnInit, OnDestroy{
       this.router.navigateByUrl('/home').then()
     }
 
-    this.gameService.sendCountDown(10)
+    this.gameService.sendCountDown(30)
 
     this.dsub = this.dataSubscribe.subscribe();
 
