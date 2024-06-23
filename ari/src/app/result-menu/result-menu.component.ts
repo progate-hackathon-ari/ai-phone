@@ -4,6 +4,7 @@ import {GameService, dataSubscribe} from "../services/game/game.service";
 import {Observable, Subscription} from "rxjs";
 
 interface Player {
+    key: string;
     id: string;
     score: number | undefined;
     data: DataList[];
@@ -34,6 +35,7 @@ interface DataStructure {
 }
 
 interface DataList {
+    key: string;
   prompt: string;
   image_uri: string;
   user: string;
@@ -116,7 +118,9 @@ export class ResultMenuComponent implements OnInit, OnDestroy {
                 }
                 if ('per_user' in value) {
                     Object.entries(value.per_user as PerUser).forEach(([userKey, userValue]) => {
+                        console.log(userKey);
                         listData.push({
+                            key: userKey,
                             prompt: userValue.answer,
                             image_uri: userValue.img,
                             user: userValue.username,
@@ -125,6 +129,7 @@ export class ResultMenuComponent implements OnInit, OnDestroy {
                     });
                 }
                     this.players.push({
+                        key: key,
                       id: key,
                       score: score,
                       data: listData

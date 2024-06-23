@@ -18,8 +18,7 @@ interface PlayerData {
 })
 export class AdminUserComponent implements OnInit , OnDestroy{
   constructor(private router: Router, private gameService: GameService, private dataSubscribe: dataSubscribe,private http: HttpService) {
-
-  }
+}
 
   players: PlayerData[] = []
   subscription: Subscription | undefined
@@ -54,10 +53,10 @@ export class AdminUserComponent implements OnInit , OnDestroy{
     this.selectedOption = option;
   }
 
-  copyUrl(){
+copyUrl(){
     navigator.clipboard.writeText(`${document.location.origin}/invited-home?roomId=${this.roomId}`).then();
     alert("Copied the URL");
-  }
+}
 
   onClickStart(){
     if (this.roomId === undefined) return
@@ -66,9 +65,7 @@ export class AdminUserComponent implements OnInit , OnDestroy{
     result.subscribe(data => {
         this.gameService.sendReady()
         this.gameService.isAdmin = true
-        this.router.navigateByUrl("/countdown").then()
     })
+        this.router.navigateByUrl("/countdown").then()
   }
-
 }
-
